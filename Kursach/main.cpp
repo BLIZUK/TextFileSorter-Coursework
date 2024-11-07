@@ -14,6 +14,7 @@
 #include <codecvt>
 #include <windows.h>
 #include <limits>
+#include "D:/apps/Tools/VisualStudio/Projects/List/List/List.h"
 
 
 // Удаление макроса
@@ -44,7 +45,6 @@ void delay()
 // Сортировка файла с помощью asm вставок
 void sortedAsm() 
 {
-	
 
 }
 
