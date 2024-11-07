@@ -1,3 +1,12 @@
+/* 
+Автор: Близученко А.Г.
+Тема: "Сортировка последовательностей"
+Учебная дисциплина: Архитектура вычислительных систем
+Шифры группы: ИВТ2-23
+Год выполнения: 2024 
+*/
+
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -32,6 +41,14 @@ void delay()
 }
 
 
+// Сортировка файла с помощью asm вставок
+void sortedAsm() 
+{
+	
+
+}
+
+
 // Чтение информации с файла
 int readFile(string path) 
 {
@@ -52,6 +69,16 @@ int readFile(string path)
 	file.close();
 	delay();
 	return 0;
+}
+
+
+// Вводе пути к файлу
+string pathChange()
+{
+	string path;
+	cout << "Введите путь:\n\n$->: ";
+	cin >> path;
+	return path;
 }
 
 
@@ -98,15 +125,15 @@ void autoMode()
 // Обработка файла с помощью ручного ввода пути 
 void manualMode()
 {
-	string path = "D:\\example.txt";
-	int flagChose;
+	string path = "Выберите путь";
+	int flagChose, flagActive = 0;
 	do {
 		heading();
 		cout << "\n\t\t       Меню обработки файла\n" << endl;
-		cout << "|!| Путь к файлу - 'D:\\example.txt';" << endl;
+		cout << "|!| Путь к файлу - '"<< path << "';" << endl;
 		cout << "|!| Ключевое поле - 'Знаки';\n" << endl;
 		cout << "|x| Выберите режим открытия файла:" << endl;
-		cout << "\n   | 0 - Выход;\n   | 1 - Просмотр содержимого файла;\n   | 2 - Сортировка файла;\n\n$->: ";
+		cout << "\n   | 0 - Выход;\n   | 1 - Изменить путь\n   | 2 - Просмотр содержимого файла;\n   | 3 - Сортировка файла;\n\n$->: ";
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -121,11 +148,15 @@ void manualMode()
 		{
 		case 1:
 			system("cls");
-			readFile(path);
-
+			path = pathChange();
 			system("cls");
 			break;
 		case 2:
+			system("cls");
+			readFile(path);
+			system("cls");
+			break;
+		case 3:
 			break;
 		}
 	} while (flagChose != 0);
