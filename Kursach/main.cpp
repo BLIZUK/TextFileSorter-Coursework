@@ -75,6 +75,8 @@ int readFile(string& path)
 	return 0;
 }
 
+
+// Обработка файла - чтение сортировка.
 void working_with_file(string& path)
 {
 	int flagChose;
@@ -112,6 +114,7 @@ void working_with_file(string& path)
 }
 
 
+// Список сохраненных файлов 
 int sevedFiles(List <string>& filePath, string& path)
 {
 	int flagChose;
@@ -159,6 +162,7 @@ int sevedFiles(List <string>& filePath, string& path)
 }
 
 
+// Удаление файла
 void delFile(List <string>& filePath)
 {
 	int flagChose;
@@ -197,6 +201,7 @@ void delFile(List <string>& filePath)
 }
 
 
+// создание нового файла
 void newFile(List <string>& filePath)
 {
 	string path;
