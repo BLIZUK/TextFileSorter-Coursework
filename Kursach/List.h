@@ -13,6 +13,7 @@ template <typename T>
 class List
 {
 private:
+
     struct Node
     {
         T data;
@@ -24,6 +25,7 @@ private:
     Node* head;
     Node* tail;
     size_t size;
+
 
 public:
 
