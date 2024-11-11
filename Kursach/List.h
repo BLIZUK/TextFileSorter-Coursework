@@ -107,6 +107,70 @@ public:
     }
 
 
+    // Удаление определенного узла по значению
+    void remove(const T& value)
+    {
+        Node* current = head;
+
+        while (current)
+        {
+            if (current->data == value)
+            {
+                if (current->prev)
+                {
+                    current->prev->next = current->next; // Соединяем предыдущий узел с следующим
+                }
+                else
+                {
+                    head = current->next; // Если удаляем голову, обновляем указатель на голову
+                }
+
+                if (current->next)
+                {
+                    current->next->prev = current->prev; // Соединяем следующий узел с предыдущим
+                }
+                else
+                {
+                    tail = current->prev; // Если удаляем хвост, обновляем указатель на хвост
+                }
+
+                delete current; // Освобождаем память
+                size--;
+                return; // Выходим после удаления первого найденного узла
+            }
+            current = current->next; // Переходим к следующему узлу
+        }
+
+        throw std::invalid_argument("Value not found in the list"); // Если значение не найдено
+    }
+
+
+    // Удаление узла по индексу
+    void del(size_t index)
+    {
+        if (index < 0 || index >= size)
+            throw std::out_of_range("Index out of range");
+
+        Node* current = head;
+
+        for (size_t i = 0; i < index; ++i)
+            current = current->next;
+
+        if (current->prev)
+            current->prev->next = current->next; // Соединяем предыдущий узел с следующим
+        else
+            head = current->next; // Если удаляем голову, обновляем указатель на голову
+
+        if (current->next)
+            current->next->prev = current->prev; // Соединяем следующий узел с предыдущим
+        else
+            tail = current->prev; // Если удаляем хвост, обновляем указатель на хвост
+
+        delete current; // Освобождаем память
+        size--;
+    }
+
+
     // Получить первый элемент списка
     T& front()
     {
