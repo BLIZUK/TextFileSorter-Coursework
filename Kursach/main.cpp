@@ -38,7 +38,7 @@ void heading()
 void delay()
 {
 	char check;
-	cout << "\n\n>> Э|x| Введите любой символ для продожения...\n\n$->: ";
+	cout << "\n\n>> |x| Введите любой символ для продожения...\n\n$->: ";
 	cin >> check;
 }
 
@@ -56,7 +56,8 @@ int readFile(string& path)
 	ifstream file(path);
 	if (!file.is_open())
 	{
-		cerr << "\n|!| Ошибка, файл не может быть открыт!" << endl;
+		cerr << "\n>> |!| Ошибка, файл не может быть открыт!" << endl;
+		file.close();
 		delay();
 		return 1;
 	}
@@ -93,7 +94,7 @@ void working_with_file(string& path)
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			flagChose = -1;
 			system("cls");
-			cout << "\n|!| Вы ввели неправильное значение!\n" << endl;
+			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 			continue;
 		}
 		switch (flagChose)
@@ -109,6 +110,11 @@ void working_with_file(string& path)
 			system("cls");
 			break;
 
+		}
+		if (flagChose < 0 || flagChose > 2)
+		{
+			system("cls");
+			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 		}
 	} while (flagChose != 0);
 }
