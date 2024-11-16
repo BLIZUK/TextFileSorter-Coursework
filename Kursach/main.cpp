@@ -28,8 +28,8 @@ using namespace std;
 void heading() 
 {
 	cout << "---------------------------------------------------------------------------------------------------------" << endl;
-	//cout << "|\t\t\t\t\t\tКурсовая работа\t\t\t\t\t\t| " << endl;
-	cout << "|\t\t\t\t\t\tKursach\t\t\t\t\t\t\t| " << endl;
+  //cout << "|\t\t\t\t\t\tКурсовая работа\t\t\t\t\t\t|" << endl;
+	cout << "|\t\t\t\t\t\tKursach\t\t\t\t\t\t\t|" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------" << endl;
 }
 
@@ -44,8 +44,12 @@ void delay()
 
 
 // Сортировка файла за счет С++ (Пример работы)
-void sortedC ()
+void sortedC (List <string>& text)
 {
+	//List <string> text;
+	text.print();
+	delay();
+
 }
 
 
@@ -129,9 +133,42 @@ void working_with_file(string& path)
 			break;
 		case 2:
 			system("cls");
-
+			sortedC(text);
 			flagActive = 1;
-			
+			system("cls");
+			break;
+		// Проверка на наличие несохраенных данных для выхода из функции и записи в файл отсортированного текста
+		case 0:
+			do
+			{
+				if (flagActive == 1)
+				{
+					cout << "\n    >> |!| Есть несохраненные данные. Сохранить?\n\n$->: ";
+					if (!(cin >> exit))
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						flagChose = -1;
+						//system("cls");
+						cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
+						continue;
+					}
+					if (exit == 1)
+					{
+						// Запись данных в файл
+						writeFile();
+						flagActive = 0;
+					}
+					if (exit == 0) flagActive = 0;
+					if (exit != 0)
+					{
+						cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
+						continue;
+					}
+
+				}
+				text.~List();
+			} while (flagActive != 0);
 			break;
 
 		}
@@ -141,33 +178,6 @@ void working_with_file(string& path)
 			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 		}
 	} while (flagChose != 0);
-	// Проверка на наличие несохраенных данных для выхода из функции и записи в файл отсортированного текста
-	do
-	{
-		if (flagActive == 1)
-		{
-			cout << "  >> |!| Есть несохраненные данные. Сохранить?\n\n$->:";
-			if (!(cin >> exit))
-			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				flagChose = -1;
-				//system("cls");
-				cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
-				continue;
-			}
-			if (exit == 0) flagActive = 0;
-			else
-			{
-				// Запись данных в файл
-				writeFile();
-				flagActive = 0;
-			}
-
-		}
-		system("cls");
-		text.~List();
-	} while (flagActive != 0);
 }
 
 
@@ -299,7 +309,7 @@ void PathSelection(List <string>& filePath, string& path, int& SF)
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "\t     |\n\t     |\n\t     |-|x| Действия:" << endl;
-		cout << "\t\t|\n\t\t| 1 - Выбор файла;\n\t\t| 2 - Добавление файла;\n\t\t| 3 - Удаление файла;\n\t\t| 0 - Выход в меню;\n\t\t|\n\n$->: ";
+		cout << "\t\t|\n\t\t| 1 - Список файлов;\n\t\t| 2 - Добавление файла;\n\t\t| 3 - Удаление файла;\n\t\t| 0 - Выход в меню;\n\t\t|\n\n$->: ";
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
