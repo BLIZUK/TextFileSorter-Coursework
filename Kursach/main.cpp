@@ -43,6 +43,12 @@ void delay()
 }
 
 
+// Сортировка файла за счет С++ (Пример работы)
+void sortedC ()
+{
+}
+
+
 // Сортировка файла с помощью asm вставок
 void sortedAsm() 
 {
@@ -50,8 +56,14 @@ void sortedAsm()
 }
 
 
+// Запись новых данных в файл
+void writeFile()
+{
+
+}
+
 // Чтение информации с файла
-int readFile(string& path)
+int readFile(string& path, List <string>& text)
 {
 	ifstream file(path);
 	if (!file.is_open())
@@ -62,14 +74,24 @@ int readFile(string& path)
 		return 1;
 	}
 	heading();
-	cout << "\n                                           Содержимое файла:\n" << endl;
-	cout << "->|" << path <<  "|>>>\n\n    >> ";
+	cout << "\n                                        ==|Содержимое файла|==:\n" << endl;
+	cout << ">> |" << path <<  "| \n\n";
 	SetConsoleOutputCP(CP_UTF8);
-	string line;
-	while (getline(file, line))
+
+	char ch;
+	string suggestions;
+	while (file.get(ch))
 	{
-		cout << line << endl;
+		//cout << ch;
+		suggestions += ch;
+		if (ch == '.')
+		{
+			text.append(suggestions);
+			suggestions = "";
+		}
 	}
+	//cout << txt;
+	text.print();
 	SetConsoleOutputCP(1251);
 	file.close();
 	delay();
@@ -80,11 +102,12 @@ int readFile(string& path)
 // Обработка файла - чтение сортировка.
 void working_with_file(string& path)
 {
-	int flagChose;
+	List <string> text;
+	int flagChose, flagActive = 0, exit;
 	do
 	{
 		heading();
-		cout << "\n                                            Работа с файлом" << endl;
+		cout << "\n                                         ==|Работа с файлом|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
 		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n\n$->: ";
@@ -101,13 +124,14 @@ void working_with_file(string& path)
 		{
 		case 1:
 			system("cls");
-			readFile(path);
+			readFile(path, text);
 			system("cls");
 			break;
 		case 2:
 			system("cls");
 
-			system("cls");
+			flagActive = 1;
+			
 			break;
 
 		}
@@ -117,6 +141,33 @@ void working_with_file(string& path)
 			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 		}
 	} while (flagChose != 0);
+	// Проверка на наличие несохраенных данных для выхода из функции и записи в файл отсортированного текста
+	do
+	{
+		if (flagActive == 1)
+		{
+			cout << "  >> |!| Есть несохраненные данные. Сохранить?\n\n$->:";
+			if (!(cin >> exit))
+			{
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				flagChose = -1;
+				//system("cls");
+				cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
+				continue;
+			}
+			if (exit == 0) flagActive = 0;
+			else
+			{
+				// Запись данных в файл
+				writeFile();
+				flagActive = 0;
+			}
+
+		}
+		system("cls");
+		text.~List();
+	} while (flagActive != 0);
 }
 
 
@@ -127,15 +178,16 @@ int sevedFiles(List <string>& filePath, string& path)
 	do
 	{
 		heading();
-		cout << "\n                                       Список сохраненных файлов" << endl;
+		cout << "\n                                    ==|Список сохраненных файлов|==" << endl;
 		cout << "\n   |Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "         |\n         |\n         |-|x| Выбор:\n            |" << endl;
 		if (filePath.getSize())
 		{
 			for (int i = 0; i < filePath.getSize(); i++)
 			{
-				cout << "            | " << i + 1 << " - " << filePath[i] << ";" << endl;
+				cout << "            | " << i + 1 << " - " << filePath[i] << " ;" << endl;
 			}
+			cout << "            | " << endl;
 			cout << "\n\n$->:|File|-> ";
 		}
 		else
@@ -175,14 +227,15 @@ void delFile(List <string>& filePath)
 	do
 	{
 		heading();
-		cout << "\n                                       Выбор файла для удаления" << endl;
+		cout << "\n                                    ==|Выбор файла для удаления|==" << endl;
 		cout << "\n   |Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "         |\n         |\n         |-|x| Выбор:\n            |" << endl;
 		for (int i = 0; i < filePath.getSize(); i++)
 		{
-			cout << "            | " << i + 1 << " - " << filePath[i] << ";" << endl;
+			cout << "            | " << i + 1 << " - " << filePath[i] << " ;" << endl;
 		}
-		cout << "\n\n$->:|File|-> ";
+		cout << "            | " << endl;
+		cout << "\n\n$->:|Saved files|-> ";
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -217,7 +270,7 @@ void newFile(List <string>& filePath)
 	do
 	{
 		heading();
-		cout << "\n                                            Добавление файла\n" << endl;
+		cout << "\n                                         ==|Добавление файла|==\n" << endl;
 		cout << ">> |x| Введите путь для нахождения файла (Для выхода - 0)\n\n$->|Saved Files|->: ";
 		cin >> path;
 		if (path == "0") break;
@@ -242,7 +295,7 @@ void PathSelection(List <string>& filePath, string& path, int& SF)
 	do
 	{
 		heading();
-		cout << "\n                                              Выбор файла" << endl;
+		cout << "\n                                           ==|Выбор файла|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "\t     |\n\t     |\n\t     |-|x| Действия:" << endl;
@@ -290,10 +343,11 @@ void mainMenu()
 	string path = "Не выбран!";
 	List <string> filePath;
 	filePath.append("E:\\Example.txt");
+	filePath.append("D:\\example.txt");
 	do 
 	{
 		heading();
-		cout << "\n                                                 Меню" << endl;
+		cout << "\n                                              ==|Меню|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
 		cout << "        |\n        | 1 - Работа с файлом;\n        | 2 - Выбор файла;\n        | 0 - Выход;\n        |\n\n$->: ";	
