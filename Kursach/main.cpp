@@ -14,7 +14,9 @@
 #include <codecvt>
 #include <windows.h>
 #include <limits>
+#include <set>
 #include "List.h"
+
 
 
 // Удаление макроса
@@ -43,11 +45,30 @@ void delay()
 }
 
 
-// Сортировка файла за счет С++ (Пример работы)
-void sortedC (List <string>& text)
+
+int foundSymb(string text)
 {
-	//List <string> text;
+	set <char> neededChars = {!}
+}
+
+
+// Сортировка файла за счет С++ (Пример работы)
+void sortedC(List <string>& text)
+{
+	List <string> SortedText;
+	int count, flag = 0;
+
+	for (int i = 0; i < text.getSize(); i++)
+	{
+		if (SortedText.empty()) SortedText.append(text[0])
+		if 
+	}
+
+
+	// Вывод
+	SetConsoleOutputCP(CP_UTF8);
 	text.print();
+	SetConsoleOutputCP(1251);
 	delay();
 
 }
@@ -56,7 +77,6 @@ void sortedC (List <string>& text)
 // Сортировка файла с помощью asm вставок
 void sortedAsm() 
 {
-
 }
 
 
@@ -82,14 +102,19 @@ int readFile(string& path, List <string>& text)
 	cout << ">> |" << path <<  "| \n\n";
 	SetConsoleOutputCP(CP_UTF8);
 
-	char ch;
+	char symbol, point, multipoint = ' ';
 	string suggestions;
-	while (file.get(ch))
+	while (file.get(symbol))
 	{
-		//cout << ch;
-		suggestions += ch;
-		if (ch == '.')
+		
+		suggestions += symbol;
+		if (symbol == '.' )
 		{
+			point = '.';
+			if (multipoint == '.')
+			{
+
+			}
 			text.append(suggestions);
 			suggestions = "";
 		}

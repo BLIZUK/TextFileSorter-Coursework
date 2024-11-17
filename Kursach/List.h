@@ -12,6 +12,7 @@
 template <typename T>
 class List
 {
+
 private:
 
     struct Node
@@ -28,6 +29,7 @@ private:
 
 
 public:
+
 
     // Конструктор
     List() : head(nullptr), tail(nullptr), size(0) {}
@@ -59,6 +61,31 @@ public:
             newNode->prev = tail;
             tail = newNode;
         }
+        size++;
+    }
+
+
+    // Вставка узла перед указанным узлом
+    void insertBefore(Node* existingNode, const T& value) {
+        if (!existingNode) {
+            throw std::invalid_argument("Existing node cannot be null");
+        }
+
+        Node* newNode = new Node(value);
+
+        // Связываем новый узел с существующим
+        newNode->next = existingNode;
+        newNode->prev = existingNode->prev;
+
+        // Если существует предыдущий узел, связываем его с новым узлом
+        if (existingNode->prev) {
+            existingNode->prev->next = newNode;
+        }
+        else {
+            head = newNode; // Если это первый узел, обновляем указатель на голову
+        }
+
+        existingNode->prev = newNode; // Связываем существующий узел с новым
         size++;
     }
 
@@ -226,6 +253,26 @@ public:
             t = t->next;
         }
         return t->data;
+    }
+
+
+    void sort() {
+        if (!head || !head->next) return; // Если список пуст или содержит один элемент
+
+        Node* current = head->next;
+
+        while (current) {
+            Node* nextNode = current->next; // Сохраняем следующий узел
+            Node* j = current;
+
+            // Перемещаем текущий узел на правильную позицию в отсортированной части списка
+            while (j->prev && j->data < j->prev->data) {
+                std::swap(j->data, j->prev->data);
+                j = j->prev;
+            }
+
+            current = nextNode; // Переходим к следующему узлу
+        }
     }
 };
 
