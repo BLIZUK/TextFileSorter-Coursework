@@ -44,6 +44,7 @@ public:
             head = head->next;
             delete temp;
         }
+        size = 0;
     }
 
 
@@ -65,33 +66,42 @@ public:
     }
 
 
-    // Вставка узла перед указанным узлом
-    void insertBefore(Node* existingNode, const T& value) {
-        if (!existingNode) {
-            throw std::invalid_argument("Existing node cannot be null");
+    // Вставка узла перед указанным индексом
+    void push(size_t index, const T& value) {
+        if (index < 0 || index > size) {
+            throw std::out_of_range("Выход индекса за границу");
+        }
+
+        if (index == 0) {
+            insertBefore(value); // Если индекс 0, вызываем push
+            return;
         }
 
         Node* newNode = new Node(value);
+        Node* current = head;
+
+        for (size_t i = 0; i < index - 1; ++i) {
+            current = current->next;
+        }
 
         // Связываем новый узел с существующим
-        newNode->next = existingNode;
-        newNode->prev = existingNode->prev;
+        newNode->next = current->next;
+        newNode->prev = current;
 
-        // Если существует предыдущий узел, связываем его с новым узлом
-        if (existingNode->prev) {
-            existingNode->prev->next = newNode;
+        if (current->next) {
+            current->next->prev = newNode;
         }
         else {
-            head = newNode; // Если это первый узел, обновляем указатель на голову
+            tail = newNode; // Если это последний узел, обновляем указатель на хвост
         }
 
-        existingNode->prev = newNode; // Связываем существующий узел с новым
+        current->next = newNode;
         size++;
     }
 
 
     // добавление элемента вперед листа
-    void push(const T& value)
+    void insertBefore(const T& value)
     {
         Node* newNode = new Node(value);
         if (!head)

@@ -44,11 +44,59 @@ void delay()
 	cin >> check;
 }
 
+void characterOutput()
+{
+
+}
 
 
+// Нахождение символов в предложение и занесение их в лист
+void foundSymb(string text, List <char>& symbols)
+{
+	int count = 0;
+	set <char> punctuationMarks =
+	{
+		'.', ',', '!', '?', ';', ':', '-', '_',
+		'(', ')', '[', ']', '{', '}', '<', '>',
+		'\'', '\"', '\\', '/', '|', '@', '#',
+		'$', '%', '^', '&', '*', '+', '=',
+		'~', '`'
+	};
+	// ' ', '\t'
+
+	for (char s : text)
+	{
+		if (punctuationMarks.find(s) != punctuationMarks.end())
+		{
+			count += 1;
+			symbols.append(s);
+		}
+	}
+}
+
+
+// Нахождение символов в предложение и подсчет их
 int foundSymb(string text)
 {
-	set <char> neededChars = {!}
+	int count = 0;
+	set <char> punctuationMarks =
+	{
+		'.', ',', '!', '?', ';', ':', '-', '_',
+		'(', ')', '[', ']', '{', '}', '<', '>',
+		'\'', '\"', '\\', '/', '|', '@', '#',
+		'$', '%', '^', '&', '*', '+', '=',
+		'~', '`'
+	};
+	// ' ', '\t'
+
+	for (char s : text)
+	{
+		if (punctuationMarks.find(s) != punctuationMarks.end())
+		{
+			count += 1;
+		}
+	}
+	return count;
 }
 
 
@@ -60,8 +108,7 @@ void sortedC(List <string>& text)
 
 	for (int i = 0; i < text.getSize(); i++)
 	{
-		if (SortedText.empty()) SortedText.append(text[0])
-		if 
+		if (SortedText.empty()) SortedText.append(text[0]);
 	}
 
 
@@ -72,6 +119,7 @@ void sortedC(List <string>& text)
 	delay();
 
 }
+
 
 
 // Сортировка файла с помощью asm вставок
@@ -86,52 +134,105 @@ void writeFile()
 
 }
 
+
+
+
+
 // Чтение информации с файла
 int readFile(string& path, List <string>& text)
 {
 	ifstream file(path);
 	if (!file.is_open())
 	{
-		cerr << "\n>> |!| Ошибка, файл не может быть открыт!" << endl;
 		file.close();
-		delay();
 		return 1;
 	}
-	heading();
-	cout << "\n                                        ==|Содержимое файла|==:\n" << endl;
-	cout << ">> |" << path <<  "| \n\n";
-	SetConsoleOutputCP(CP_UTF8);
-
-	char symbol, point, multipoint = ' ';
-	string suggestions;
+	char symbol;
+	string suggestions, multipoint = "";
 	while (file.get(symbol))
 	{
-		
-		suggestions += symbol;
-		if (symbol == '.' )
+		if (multipoint != "")
 		{
-			point = '.';
-			if (multipoint == '.')
+			if (symbol != '.')
 			{
-
+				text.append(suggestions);
+				suggestions = "";
+				multipoint = "";
 			}
+		}
+		
+
+		suggestions += symbol;
+		if (symbol == '.')
+		{
+			multipoint += symbol; 
+		}
+		if (symbol == '!')
+		{
+			text.append(suggestions);
+			suggestions = "";
+		}
+		if (symbol == '?')
+		{
 			text.append(suggestions);
 			suggestions = "";
 		}
 	}
-	//cout << txt;
+	text.append(suggestions);
+	file.close();
+	return 0;
+}
+
+
+void output(string& path, List <string>& text)
+{
+	List <char> symbols; // Список знаков в предложение из файла
+	int count;
+	heading();
+	cout << "\n                                        ==|Содержимое файла|==\n" << endl;
+	cout << ">> |" << path << "| \n\n";
+	if (readFile(path, text))
+	{
+		cout << "\n>> |!| Ошибка, файл не может быть открыт!" << endl;
+		delay();
+		return;
+	}
+	//readFile(path, text);
+	cout << ">> |Text|>:\n" << endl;
+	SetConsoleOutputCP(CP_UTF8);
 	text.print();
 	SetConsoleOutputCP(1251);
-	file.close();
+	//cout << endl << ">> |Количество предложений|>:\n\n" << text.getSize() << endl;
+	cout << endl << ">> |Info|>:\n\n";
+	cout << "\n\t---------------------------------------------------------------------------------" << endl;
+	cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
+	cout << "\t|\tНомер\t|\t\t\tСимволы\t\t\t|\tКол-Во\t|" << endl;
+	cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
+	for (int i = 0; i < text.getSize(); i++)
+	{
+		count = foundSymb(text[i]);
+		cout << "\n\t---------------------------------------------------------------------------------" << endl;
+		cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
+		cout << "\t|\t" << i + 1<< "\t|\t";
+		foundSymb(text[i], symbols);
+		if (count < 30) {
+			while (count != 0)
+			{
+				cout << symbols[i] << " ";
+				count--;
+			}
+			cout << "\t\t\t\t|\t" << foundSymb(text[i]) << "\t|" << endl;
+			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
+		}
+	}
 	delay();
-	return 0;
 }
 
 
 // Обработка файла - чтение сортировка.
 void working_with_file(string& path)
 {
-	List <string> text;
+	List <string> text; // Список предложений текста из файла
 	int flagChose, flagActive = 0, exit;
 	do
 	{
@@ -153,12 +254,13 @@ void working_with_file(string& path)
 		{
 		case 1:
 			system("cls");
-			readFile(path, text);
+			output(path, text);
+			text.~List();
 			system("cls");
 			break;
 		case 2:
 			system("cls");
-			sortedC(text);
+			//sortedC(text);
 			flagActive = 1;
 			system("cls");
 			break;
@@ -420,6 +522,8 @@ void mainMenu()
 			}
 	} while (flagChose != 0);
 	filePath.~List();
+	system("cls");
+	cout << "\n>> |!| Завершение работы!" << endl;
 }
 
 
@@ -429,7 +533,5 @@ int main()
 	// Изменение кодировки терминала для работы с кириллицей
 	system("chcp 1251 > nul");
 	mainMenu();
-	system("cls");
-	cout << "\n>> |!| Завершение работы!" << endl;
 	return 0;
 }
