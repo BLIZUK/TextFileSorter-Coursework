@@ -62,13 +62,13 @@ void foundSymb(string text, List <char>& symbols)
 		'$', '%', '^', '&', '*', '+', '=',
 		'~', '`'
 	};
+
 	// ' ', '\t'
 
 	for (char s : text)
 	{
 		if (punctuationMarks.find(s) != punctuationMarks.end())
 		{
-			count += 1;
 			symbols.append(s);
 		}
 	}
@@ -87,6 +87,7 @@ int foundSymb(string text)
 		'$', '%', '^', '&', '*', '+', '=',
 		'~', '`'
 	};
+
 	// ' ', '\t'
 
 	for (char s : text)
@@ -119,7 +120,6 @@ void sortedC(List <string>& text)
 	delay();
 
 }
-
 
 
 // Сортировка файла с помощью asm вставок
@@ -197,34 +197,73 @@ void output(string& path, List <string>& text)
 		delay();
 		return;
 	}
-	//readFile(path, text);
 	cout << ">> |Text|>:\n" << endl;
 	SetConsoleOutputCP(CP_UTF8);
 	text.print();
 	SetConsoleOutputCP(1251);
-	//cout << endl << ">> |Количество предложений|>:\n\n" << text.getSize() << endl;
 	cout << endl << ">> |Info|>:\n\n";
 	cout << "\n\t---------------------------------------------------------------------------------" << endl;
 	cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
-	cout << "\t|\tНомер\t|\t\t\tСимволы\t\t\t|\tКол-Во\t|" << endl;
+	cout << "\t|    № Номер\t|\t\t    Символы\t\t\t|     Кол-Во\t|" << endl;
 	cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 	for (int i = 0; i < text.getSize(); i++)
 	{
 		count = foundSymb(text[i]);
-		cout << "\n\t---------------------------------------------------------------------------------" << endl;
+		cout << "\n\t|---------------|-----------------------------------------------|---------------|" << endl;
 		cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
-		cout << "\t|\t" << i + 1<< "\t|\t";
+		cout << "\t|\t" << i + 1<< "\t|    ";
 		foundSymb(text[i], symbols);
-		if (count < 30) {
-			while (count != 0)
+		if (count < 21) {
+			int j = 0;
+			while (j < count)
 			{
-				cout << symbols[i] << " ";
-				count--;
+				cout << symbols[j] << " ";
+				j++;
 			}
-			cout << "\t\t\t\t|\t" << foundSymb(text[i]) << "\t|" << endl;
+			for (j *= 2; j < 43; j++)
+			{
+				cout << " ";
+			}
+			cout << "|\t" << foundSymb(text[i]) << "\t|" << endl;
 			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 		}
+		else if (count < 100)
+		{
+			int k = 0, counter = 0, step = 0;
+			while (count > k)
+			{
+				if (counter == 20 && step == 0)
+				{
+					cout << "   |\t" << foundSymb(text[i]) << "\t|\n";
+					cout << "\t|\t\t|    ";
+					counter = 0;
+					step++;
+				}
+				if (counter == 20)
+				{
+					cout << "   |\t\t|\n";
+					cout << "\t|\t\t|    ";
+					counter = 0;
+				}
+				cout << symbols[k] << " ";
+				counter += 1;
+				k++;
+			}
+			for (counter *= 2; counter < 43; counter++)
+			{
+				cout << " ";
+			}
+			cout << "|\t\t|" << endl;
+			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
+		}
+		else
+		{
+			cout << "\t\tПЕРЕПОЛНЕНИЕ\t\t\t|\t>100\t|" << endl;
+			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
+		}
+		symbols.~List();
 	}
+	cout << "\n\t---------------------------------------------------------------------------------" << endl;
 	delay();
 }
 
@@ -481,6 +520,7 @@ void mainMenu()
 	List <string> filePath;
 	filePath.append("E:\\Example.txt");
 	filePath.append("D:\\example.txt");
+	filePath.append("D:\\ex.txt");
 	do 
 	{
 		heading();
