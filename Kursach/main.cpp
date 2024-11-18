@@ -102,23 +102,44 @@ int foundSymb(string text)
 
 
 // Сортировка файла за счет С++ (Пример работы)
-void sortedC(List <string>& text)
+void sortedC(List<string>& Text, List<string>& SortedText)
 {
-	List <string> SortedText;
-	int count, flag = 0;
-
-	for (int i = 0; i < text.getSize(); i++)
+	for (int i = 0; i < Text.getSize(); i++)
 	{
-		if (SortedText.empty()) SortedText.append(text[0]);
+		bool inserted = false;
+
+		if (SortedText.empty())
+		{
+			SortedText.append(Text[i]);
+			continue;
+		}
+
+		for (int j = 0; j < SortedText.getSize(); j++)
+		{
+			if (foundSymb(Text[i]) <= foundSymb(SortedText[j]))
+			{
+				SortedText.push(j, Text[i]);
+				inserted = true;
+				break;
+			}
+		}
+
+		if (!inserted)
+		{
+			SortedText.append(Text[i]);
+		}
 	}
 
-
-	// Вывод
+	/*
 	SetConsoleOutputCP(CP_UTF8);
-	text.print();
+	cout << SortedText.getSize() << endl;
+	for (int i = 0; i < SortedText.getSize(); i++)
+	{
+		cout << SortedText[i] << endl << foundSymb(SortedText[i]) << endl;
+	}
 	SetConsoleOutputCP(1251);
 	delay();
-
+	*/
 }
 
 
@@ -129,16 +150,40 @@ void sortedAsm()
 
 
 // Запись новых данных в файл
-void writeFile()
+string writeFile(List <string>& filePath, string path, List<string>& text)
 {
+	// Создание имени файла с добавленным словом "sorted"
+	size_t dotPosition = path.find_last_of('.');
+	string filename = path.substr(0, dotPosition);
+	string extension = path.substr(dotPosition);
+	string sortedPath = filename + "_sorted" + extension;
 
+	// Открытие файла в режиме записи
+	ofstream file(sortedPath, ios::trunc);
+
+	if (!file.is_open())
+	{
+		return ">>> |!| Не удалось открыть файл для записи.";
+	}
+
+	// Запись строк из списка в файл
+	for (int i = 0; i < text.getSize(); i++)
+	{
+		file << "\n" << text[i];
+	}
+
+	// Закрытие файла
+	file.close();
+
+	filePath.append(sortedPath);
+	return ">>> |!| Данные успешно записаны в файл == " + sortedPath + " ==";
 }
 
 
 
 
 
-// Чтение информации с файла
+// Чтение информации с файла и заполнение структуры данных
 int readFile(string& path, List <string>& text)
 {
 	ifstream file(path);
@@ -184,6 +229,7 @@ int readFile(string& path, List <string>& text)
 }
 
 
+// Вывод информации о файле
 void output(string& path, List <string>& text)
 {
 	List <char> symbols; // Список знаков в предложение из файла
@@ -191,16 +237,19 @@ void output(string& path, List <string>& text)
 	heading();
 	cout << "\n                                        ==|Содержимое файла|==\n" << endl;
 	cout << ">> |" << path << "| \n\n";
+	
 	if (readFile(path, text))
 	{
 		cout << "\n>> |!| Ошибка, файл не может быть открыт!" << endl;
 		delay();
 		return;
 	}
+	
 	cout << ">> |Text|>:\n" << endl;
 	SetConsoleOutputCP(CP_UTF8);
 	text.print();
 	SetConsoleOutputCP(1251);
+	// Вывод таблицы
 	cout << endl << ">> |Info|>:\n\n";
 	cout << "\n\t---------------------------------------------------------------------------------" << endl;
 	cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
@@ -213,6 +262,7 @@ void output(string& path, List <string>& text)
 		cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
 		cout << "\t|\t" << i + 1<< "\t|    ";
 		foundSymb(text[i], symbols);
+		// Если знаков меньше 20
 		if (count < 21) {
 			int j = 0;
 			while (j < count)
@@ -227,7 +277,8 @@ void output(string& path, List <string>& text)
 			cout << "|\t" << foundSymb(text[i]) << "\t|" << endl;
 			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 		}
-		else if (count < 100)
+		// если знаков меньше 100
+		else if (count < 101)
 		{
 			int k = 0, counter = 0, step = 0;
 			while (count > k)
@@ -256,6 +307,7 @@ void output(string& path, List <string>& text)
 			cout << "|\t\t|" << endl;
 			cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 		}
+		// В случае переполнения таблицы
 		else
 		{
 			cout << "\t\tПЕРЕПОЛНЕНИЕ\t\t\t|\t>100\t|" << endl;
@@ -269,10 +321,11 @@ void output(string& path, List <string>& text)
 
 
 // Обработка файла - чтение сортировка.
-void working_with_file(string& path)
+void working_with_file(List <string>& filePath, string& path)
 {
 	List <string> text; // Список предложений текста из файла
-	int flagChose, flagActive = 0, exit;
+	List <string> SortedText; // Список отсортированных предложений текста из файла
+	int flagChose, flagActive = 0;
 	do
 	{
 		heading();
@@ -299,44 +352,13 @@ void working_with_file(string& path)
 			break;
 		case 2:
 			system("cls");
-			//sortedC(text);
-			flagActive = 1;
-			system("cls");
+			readFile(path, text);
+			sortedC(text, SortedText);
+			cout << "\n\n" << writeFile(filePath, path, SortedText) << "\n\n";
+			//flagActive = 1;
+			text.~List();
+			SortedText.~List();
 			break;
-		// Проверка на наличие несохраенных данных для выхода из функции и записи в файл отсортированного текста
-		case 0:
-			do
-			{
-				if (flagActive == 1)
-				{
-					cout << "\n    >> |!| Есть несохраненные данные. Сохранить?\n\n$->: ";
-					if (!(cin >> exit))
-					{
-						cin.clear();
-						cin.ignore(numeric_limits<streamsize>::max(), '\n');
-						flagChose = -1;
-						//system("cls");
-						cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
-						continue;
-					}
-					if (exit == 1)
-					{
-						// Запись данных в файл
-						writeFile();
-						flagActive = 0;
-					}
-					if (exit == 0) flagActive = 0;
-					if (exit != 0)
-					{
-						cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
-						continue;
-					}
-
-				}
-				text.~List();
-			} while (flagActive != 0);
-			break;
-
 		}
 		if (flagChose < 0 || flagChose > 2)
 		{
@@ -465,7 +487,7 @@ void newFile(List <string>& filePath)
 
 
 // Выбор сохраненных файлов
-void PathSelection(List <string>& filePath, string& path, int& SF)
+void PathSelection(List <string>& filePath, string& path)
 {
 	int flagChose;
 	do
@@ -489,7 +511,7 @@ void PathSelection(List <string>& filePath, string& path, int& SF)
 		{
 		case 1:
 			system("cls");
-			SF = sevedFiles(filePath, path);
+			sevedFiles(filePath, path);
 			system("cls");
 			break;
 		case 2:
@@ -515,7 +537,7 @@ void PathSelection(List <string>& filePath, string& path, int& SF)
 // Меню выбора фалов с возможностью получения информации 
 void mainMenu() 
 {
-	int flagChose, statusFlag = 0;
+	int flagChose;
 	string path = "Не выбран!";
 	List <string> filePath;
 	filePath.append("E:\\Example.txt");
@@ -541,17 +563,17 @@ void mainMenu()
 		{
 		case 1:
 			system("cls");
-			if (statusFlag == 0)
+			if (path == "Не выбран!")
 			{
 				cout << "\n>> |!| Файл не найден!\n" << endl;
 				break;
 			}
-			working_with_file(path);
+			working_with_file(filePath, path);
 			system("cls");
 			break;
 		case 2:
 			system("cls");
-			PathSelection(filePath, path, statusFlag);
+			PathSelection(filePath, path);
 			system("cls");
 			break;
 		}

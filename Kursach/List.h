@@ -73,7 +73,7 @@ public:
         }
 
         if (index == 0) {
-            insertBefore(value); // Если индекс 0, вызываем push
+            pushBefore(value); // Если индекс 0, вызываем pushBefore
             return;
         }
 
@@ -101,7 +101,7 @@ public:
 
 
     // добавление элемента вперед листа
-    void insertBefore(const T& value)
+    void pushBefore(const T& value)
     {
         Node* newNode = new Node(value);
         if (!head)
