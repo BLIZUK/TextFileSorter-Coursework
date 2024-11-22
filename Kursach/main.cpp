@@ -44,11 +44,6 @@ void delay()
 	cin >> check;
 }
 
-void characterOutput()
-{
-
-}
-
 
 // Нахождение символов в предложение и занесение их в лист
 void foundSymb(string text, List <char>& symbols)
@@ -129,17 +124,6 @@ void sortedC(List<string>& Text, List<string>& SortedText)
 			SortedText.append(Text[i]);
 		}
 	}
-
-	/*
-	SetConsoleOutputCP(CP_UTF8);
-	cout << SortedText.getSize() << endl;
-	for (int i = 0; i < SortedText.getSize(); i++)
-	{
-		cout << SortedText[i] << endl << foundSymb(SortedText[i]) << endl;
-	}
-	SetConsoleOutputCP(1251);
-	delay();
-	*/
 }
 
 
@@ -176,7 +160,7 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 	file.close();
 
 	filePath.append(sortedPath);
-	return ">>> |!| Данные успешно записаны в файл == " + sortedPath + " ==";
+	return ">>> |!| Данные успешно отсортированны и записаны в файл == " + sortedPath + " ==";
 }
 
 
@@ -194,35 +178,40 @@ int readFile(string& path, List <string>& text)
 	}
 	char symbol;
 	string suggestions, multipoint = "";
+	// Чтение файла посимвольно
 	while (file.get(symbol))
 	{
+		// Проверка на окончание предложения с помощью многоточия
 		if (multipoint != "")
 		{
 			if (symbol != '.')
 			{
+				// Добавление символа в предложение
 				text.append(suggestions);
 				suggestions = "";
 				multipoint = "";
 			}
 		}
-		
-
+		// Проверка на окончание предложения с помощью точки
 		suggestions += symbol;
 		if (symbol == '.')
 		{
 			multipoint += symbol; 
 		}
+		// Проверка на окончание предложения с помощью восклицательного знака
 		if (symbol == '!')
 		{
 			text.append(suggestions);
 			suggestions = "";
 		}
+		// Проверка на окончание предложения с помощью вопросительного знака
 		if (symbol == '?')
 		{
 			text.append(suggestions);
 			suggestions = "";
 		}
 	}
+	// Добавление последнего предложения
 	text.append(suggestions);
 	file.close();
 	return 0;
@@ -234,10 +223,11 @@ void output(string& path, List <string>& text)
 {
 	List <char> symbols; // Список знаков в предложение из файла
 	int count;
+	// Вызов заголовка
 	heading();
 	cout << "\n                                        ==|Содержимое файла|==\n" << endl;
 	cout << ">> |" << path << "| \n\n";
-	
+	// Проверка на существование файла
 	if (readFile(path, text))
 	{
 		cout << "\n>> |!| Ошибка, файл не может быть открыт!" << endl;
@@ -246,8 +236,18 @@ void output(string& path, List <string>& text)
 	}
 	
 	cout << ">> |Text|>:\n" << endl;
+
+/*
+У меня существует проблема в кодировках, поэтому информация из файла выводится иероглифами.
+Но после изменения кодировки вывода в консоль на UTF8, дальнейшие русские символы из программы тоже перестают нормально выводиться.
+Поэтому после вывода информации из текстового файла в консоль нужно снова поменять кодировку на CP1251 для нормального вывода русского текста
+из программы.
+*/
+
+	// Изменение кодировки для вывода содержимого файла в консоль
 	SetConsoleOutputCP(CP_UTF8);
 	text.print();
+	// Изменение кодировки для вывода текста программы в консоль
 	SetConsoleOutputCP(1251);
 	// Вывод таблицы
 	cout << endl << ">> |Info|>:\n\n";
@@ -323,16 +323,18 @@ void output(string& path, List <string>& text)
 // Обработка файла - чтение сортировка.
 void working_with_file(List <string>& filePath, string& path)
 {
-	List <string> text; // Список предложений текста из файла
+	List <string> Text; // Список предложений текста из файла
 	List <string> SortedText; // Список отсортированных предложений текста из файла
 	int flagChose, flagActive = 0;
 	do
 	{
+		// Вызов заголовка
 		heading();
 		cout << "\n                                         ==|Работа с файлом|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
 		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n\n$->: ";
+		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -346,17 +348,19 @@ void working_with_file(List <string>& filePath, string& path)
 		{
 		case 1:
 			system("cls");
-			output(path, text);
-			text.~List();
+			output(path, Text);
+			Text.~List();
 			system("cls");
 			break;
 		case 2:
 			system("cls");
-			readFile(path, text);
-			sortedC(text, SortedText);
+			// Вызов функции чтения файла для заполнения структуры 
+			readFile(path, Text);
+			// Вызов функции сортировки предложений
+			sortedC(Text, SortedText);
 			cout << "\n\n" << writeFile(filePath, path, SortedText) << "\n\n";
 			//flagActive = 1;
-			text.~List();
+			Text.~List();
 			SortedText.~List();
 			break;
 		}
@@ -375,10 +379,12 @@ int sevedFiles(List <string>& filePath, string& path)
 	int flagChose;
 	do
 	{
+		// Вызов заголовка 
 		heading();
 		cout << "\n                                    ==|Список сохраненных файлов|==" << endl;
 		cout << "\n   |Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "         |\n         |\n         |-|x| Выбор:\n            |" << endl;
+		// Вывод всех сохраненных файлов в структуре
 		if (filePath.getSize())
 		{
 			for (int i = 0; i < filePath.getSize(); i++)
@@ -393,6 +399,7 @@ int sevedFiles(List <string>& filePath, string& path)
 			cout << "           |!| Файлы не найдены!\n\n>> |!| Введите 0 для выхода... " << endl;
 			cout << "\n$->: ";
 		}
+		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -410,6 +417,7 @@ int sevedFiles(List <string>& filePath, string& path)
 		}
 		if (flagChose > 0)
 		{
+			// Выбор файал сохраняется в оригинальную переменную path 
 			path = filePath[flagChose - 1];
 			return 1;
 		}
@@ -418,7 +426,7 @@ int sevedFiles(List <string>& filePath, string& path)
 }
 
 
-// Удаление файла
+// Меню удаление файла из структуры
 void delFile(List <string>& filePath)
 {
 	int flagChose;
@@ -428,12 +436,14 @@ void delFile(List <string>& filePath)
 		cout << "\n                                    ==|Выбор файла для удаления|==" << endl;
 		cout << "\n   |Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "         |\n         |\n         |-|x| Выбор:\n            |" << endl;
+		// Вывод всех сохраненных файлов в структуре 
 		for (int i = 0; i < filePath.getSize(); i++)
 		{
 			cout << "            | " << i + 1 << " - " << filePath[i] << " ;" << endl;
 		}
 		cout << "            | " << endl;
 		cout << "\n\n$->:|Saved files|-> ";
+		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -458,7 +468,7 @@ void delFile(List <string>& filePath)
 }
 
 
-// создание нового файла
+// Меню добавления нового файла в структуру
 void newFile(List <string>& filePath)
 {
 	string path;
@@ -467,12 +477,15 @@ void newFile(List <string>& filePath)
 
 	do
 	{
+		// Вызов заголовка
 		heading();
 		cout << "\n                                         ==|Добавление файла|==\n" << endl;
 		cout << ">> |x| Введите путь для нахождения файла (Для выхода - 0)\n\n$->|Saved Files|->: ";
 		cin >> path;
+		// Проверка на выход из меню
 		if (path == "0") break;
 		file.open(path);
+		// Проверка на существования файла
 		if (!file.is_open()) 
 		{
 			file.close();
@@ -480,24 +493,28 @@ void newFile(List <string>& filePath)
 			cout << "\n>> |!| Ошибка: не удалось открыть файл по указанному пути." << endl;
 			continue;
 		}
+		// Добавление файла в структуру
 		filePath.append(path);
 		flag = 0;
 	} while (flag != 0);
 }
 
 
-// Выбор сохраненных файлов
+// Меню выбора сохраненного файлов из структуры
 void PathSelection(List <string>& filePath, string& path)
 {
 	int flagChose;
+	// Началао работы меню выбора файлов 
 	do
 	{
+		// Вызов заголовка
 		heading();
 		cout << "\n                                           ==|Выбор файла|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|Saved files| == " << filePath.getSize() << " ==" << endl;
 		cout << "\t     |\n\t     |\n\t     |-|x| Действия:" << endl;
 		cout << "\t\t|\n\t\t| 1 - Список файлов;\n\t\t| 2 - Добавление файла;\n\t\t| 3 - Удаление файла;\n\t\t| 0 - Выход в меню;\n\t\t|\n\n$->: ";
+		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -511,16 +528,19 @@ void PathSelection(List <string>& filePath, string& path)
 		{
 		case 1:
 			system("cls");
+			// Запуск меню с выбором файла из списка
 			sevedFiles(filePath, path);
 			system("cls");
 			break;
 		case 2:
 			system("cls");
+			// Запуск меню добавления файла в структуру
 			newFile(filePath);
 			system("cls");
 			break;
 		case 3:
 			system("cls");
+			// запуск меню УДАЛЕНИЯ файла ИЗ СТРУКТУРЫ 
 			delFile(filePath);
 			system("cls");
 			break;
@@ -540,16 +560,20 @@ void mainMenu()
 	int flagChose;
 	string path = "Не выбран!";
 	List <string> filePath;
+	// Заполнение структуры списка основными файлами для проверки
 	filePath.append("E:\\Example.txt");
 	filePath.append("D:\\example.txt");
 	filePath.append("D:\\ex.txt");
+	// начала работы меню
 	do 
 	{
+		// Вызов заголовка
 		heading();
 		cout << "\n                                              ==|Меню|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
-		cout << "        |\n        | 1 - Работа с файлом;\n        | 2 - Выбор файла;\n        | 0 - Выход;\n        |\n\n$->: ";	
+		cout << "        |\n        | 1 - Работа с файлом;\n        | 2 - Выбор файла;\n        | 0 - Выход;\n        |\n\n$->: ";
+		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
 			cin.clear();
@@ -568,11 +592,13 @@ void mainMenu()
 				cout << "\n>> |!| Файл не найден!\n" << endl;
 				break;
 			}
+			// запуск меню работы с файлом
 			working_with_file(filePath, path);
 			system("cls");
 			break;
 		case 2:
 			system("cls");
+			// Запуск меню выбора файла 
 			PathSelection(filePath, path);
 			system("cls");
 			break;
@@ -583,6 +609,7 @@ void mainMenu()
 				cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 			}
 	} while (flagChose != 0);
+	// Отчистка структуры данных
 	filePath.~List();
 	system("cls");
 	cout << "\n>> |!| Завершение работы!" << endl;
@@ -594,6 +621,7 @@ int main()
 {
 	// Изменение кодировки терминала для работы с кириллицей
 	system("chcp 1251 > nul");
+	// Запуск главного меню
 	mainMenu();
 	return 0;
 }
