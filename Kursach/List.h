@@ -12,6 +12,7 @@
 template <typename T>
 class List
 {
+
 private:
 
     struct Node
@@ -29,6 +30,7 @@ private:
 
 public:
 
+
     // Конструктор
     List() : head(nullptr), tail(nullptr), size(0) {}
 
@@ -42,6 +44,7 @@ public:
             head = head->next;
             delete temp;
         }
+        size = 0;
     }
 
 
@@ -63,8 +66,42 @@ public:
     }
 
 
+    // Вставка узла перед указанным индексом
+    void push(size_t index, const T& value) {
+        if (index < 0 || index > size) {
+            throw std::out_of_range("Выход индекса за границу");
+        }
+
+        if (index == 0) {
+            pushBefore(value); // Если индекс 0, вызываем pushBefore
+            return;
+        }
+
+        Node* newNode = new Node(value);
+        Node* current = head;
+
+        for (size_t i = 0; i < index - 1; ++i) {
+            current = current->next;
+        }
+
+        // Связываем новый узел с существующим
+        newNode->next = current->next;
+        newNode->prev = current;
+
+        if (current->next) {
+            current->next->prev = newNode;
+        }
+        else {
+            tail = newNode; // Если это последний узел, обновляем указатель на хвост
+        }
+
+        current->next = newNode;
+        size++;
+    }
+
+
     // добавление элемента вперед листа
-    void push(const T& value)
+    void pushBefore(const T& value)
     {
         Node* newNode = new Node(value);
         if (!head)
@@ -226,6 +263,26 @@ public:
             t = t->next;
         }
         return t->data;
+    }
+
+
+    void sort() {
+        if (!head || !head->next) return; // Если список пуст или содержит один элемент
+
+        Node* current = head->next;
+
+        while (current) {
+            Node* nextNode = current->next; // Сохраняем следующий узел
+            Node* j = current;
+
+            // Перемещаем текущий узел на правильную позицию в отсортированной части списка
+            while (j->prev && j->data < j->prev->data) {
+                std::swap(j->data, j->prev->data);
+                j = j->prev;
+            }
+
+            current = nextNode; // Переходим к следующему узлу
+        }
     }
 };
 
