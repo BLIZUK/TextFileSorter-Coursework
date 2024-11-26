@@ -96,7 +96,8 @@ int foundSymb(string text)
 }
 
 
-// Сортировка файла за счет С++ (Пример работы)
+// Сортировка файла за счет С++ (Пример работы) 
+// переписать под нормальную сортировку
 void sortedC(List<string>& Text, List<string>& SortedText)
 {
 	for (int i = 0; i < Text.getSize(); i++)
@@ -128,6 +129,7 @@ void sortedC(List<string>& Text, List<string>& SortedText)
 
 
 // Сортировка файла с помощью asm вставок
+// Скорее всего будет не нужна
 void sortedAsm() 
 {
 }
