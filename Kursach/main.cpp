@@ -166,9 +166,6 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 }
 
 
-
-
-
 // Чтение информации с файла и заполнение структуры данных
 int readFile(string& path, List <string>& text)
 {
