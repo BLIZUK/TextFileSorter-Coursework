@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Inserts.cpp">
+    <ClCompile Include="check.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
