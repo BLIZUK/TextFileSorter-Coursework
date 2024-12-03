@@ -21,6 +21,7 @@
 #include <limits>
 #include <set>
 #include <cstring>
+#include "List.h"
 
 
 using namespace std;
@@ -102,6 +103,42 @@ int foundSymb_disassembling(const string& text)
 }
 
 
+void classCheckString()
+{
+	List <string> Temp;
+	Temp.append("GAV");
+	Temp.append("VAG");
+	Temp.append("AU");
+	Temp.append("EAX");
+	Temp.append("RCX");
+	cout << "\n\n|--> |!| OUTPUT before: " << endl;
+	Temp.print();
+	Temp[1] = "mya";
+	Temp[3] = "wau";
+	cout << "\n\n|--> |!| OUTPUT after: " << endl;
+	Temp.print();
+}
+
+
+void classCheckInt()
+{
+	List <int> Temp;
+	int i = 0;
+	while (i < 5)
+	{
+		Temp.append(i);
+		i++;
+	}
+	cout << "\n\n|--> |!| OUTPUT before: " << endl;
+	Temp.print();
+	Temp[1] = 10;
+	Temp[3] = 29;
+	cout << "\n\n|--> |!| OUTPUT after: " << endl;
+	Temp.print();
+	Temp.~List();
+}
+
+
 // Точка входа файла для проверки
 int t_main()
 {
@@ -110,6 +147,10 @@ int t_main()
 	string text = "G 1 _ .";
 	returnValue = foundSymb_disassembling(text);
 	cout << "\t\t~~ DEBUG MOD ~~" << endl;
-	cout << "\n\n|--> |!| OUTPUT: " << returnValue << endl;
+	cout << "\n\n|--> |!| OUTPUT: " << returnValue << endl << endl;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+	classCheckInt();
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << endl;;
+	classCheckString();
 	return 0;
 }
