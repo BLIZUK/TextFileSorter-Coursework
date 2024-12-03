@@ -31,11 +31,11 @@ private:
 public:
 
 
-    // Конструктор
+    //>>> Метод: Конструктор
     List() : head(nullptr), tail(nullptr), size(0) {}
 
 
-    // Деструктор
+    //>>> Метод: Деструктор
     ~List()
     {
         while (head)
@@ -48,7 +48,7 @@ public:
     }
 
 
-    // Добавление элемента в лист
+    //>>> Метод: Добавление элемента в лист
     void append(const T& value)
     {
         Node* newNode = new Node(value);
@@ -66,7 +66,7 @@ public:
     }
 
 
-    // Вставка узла перед указанным индексом
+    //>>> Метод: Вставка узла перед указанным индексом
     void push(size_t index, const T& value) {
         if (index < 0 || index > size) {
             throw std::out_of_range("Выход индекса за границу");
@@ -100,7 +100,7 @@ public:
     }
 
 
-    // добавление элемента вперед листа
+    //>>> Метод: добавление элемента вперед листа
     void pushBefore(const T& value)
     {
         Node* newNode = new Node(value);
@@ -118,7 +118,7 @@ public:
     }
 
 
-    // Удалить первый элемент из списка
+    //>>> Метод: Удалить первый элемент из списка
     void popf()
     {
         if (!head) return;
@@ -131,7 +131,7 @@ public:
     }
 
 
-    // Удалить последний элемент из списка
+    //>>> Метод: Удалить последний элемент из списка
     void pop()
     {
         if (!tail) return;
@@ -144,7 +144,7 @@ public:
     }
 
 
-    // Удаление определенного узла по значению
+    //>>> Метод: Удаление определенного узла по значению
     void remove(const T& value)
     {
         Node* current = head;
@@ -182,7 +182,7 @@ public:
     }
 
 
-    // Удаление узла по индексу
+    //>>> Метод: Удаление узла по индексу
     void del(size_t index)
     {
         if (index < 0 || index >= size)
@@ -208,7 +208,7 @@ public:
     }
 
 
-    // Получить первый элемент списка
+    //>>> Метод: Получить первый элемент списка
     T& front()
     {
         if (!head) throw std::out_of_range("List is empty");
@@ -216,7 +216,7 @@ public:
     }
 
 
-    // Получить последний элемент списка
+    //>>> Метод: Получить последний элемент списка
     T& back()
     {
         if (!tail) throw std::out_of_range("List is empty");
@@ -224,21 +224,21 @@ public:
     }
 
 
-    // Проверить, пуст ли список
+    //>>> Метод: Проверить, пуст ли список
     bool empty() const
     {
         return size == 0;
     }
 
 
-    // Получить размер списка
+    //>>> Метод: Получить размер списка
     size_t getSize() const
     {
         return size;
     }
 
 
-    // Вывести список
+    //>>> Метод: Вывести список
     void print() const
     {
         Node* current = head;
@@ -250,22 +250,32 @@ public:
     }
 
 
-    // Оператор индексации
-    T& operator[](const int index)
-    {
-        if (index < 0 || index >= size)
-        {
-            throw std::out_of_range("Index out of range");
+    //>>> Метод: Оператор индексации
+    T& operator[](const int index) {
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Индекс вне диапазона");
         }
         Node* t = head;
-        for (int i = 0; i < index; i++)
-        {
+        for (int i = 0; i < index; i++) {
+            t = t->next;
+        }
+        return t->data;
+    }
+
+    // Оператор индексации для получения значений по индексу 
+    const T& operator[](const int index) const {
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Индекс вне диапазона");
+        }
+        Node* t = head;
+        for (int i = 0; i < index; i++) {
             t = t->next;
         }
         return t->data;
     }
 
 
+    // Метод: Сортировка структуры данных
     void sort() {
         if (!head || !head->next) return; // Если список пуст или содержит один элемент
 
@@ -275,10 +285,11 @@ public:
             Node* nextNode = current->next; // Сохраняем следующий узел
             Node* j = current;
 
-            // Перемещаем текущий узел на правильную позицию в отсортированной части списка
+            // Сортируем с помощью insertion sort (Сортировка вставками)
             while (j->prev && j->data < j->prev->data) {
+                // Меняем местами данные, если текущий меньше предыдущего
                 std::swap(j->data, j->prev->data);
-                j = j->prev;
+                j = j->prev; // Переходим к предыдущему узлу
             }
 
             current = nextNode; // Переходим к следующему узлу
