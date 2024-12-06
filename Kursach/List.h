@@ -232,7 +232,7 @@ public:
 
 
     //>>> Метод: Получить размер списка
-    size_t getSize() const
+    int getSize() const
     {
         return size;
     }

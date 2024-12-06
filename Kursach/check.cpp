@@ -154,3 +154,4 @@ int t_main()
 	classCheckString();
 	return 0;
 }
+// Проверка
