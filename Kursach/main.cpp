@@ -269,13 +269,16 @@ int readFile(string& path, List <string>& text)
 		{
 			if (symbol != '.')
 			{
-				// Добавление символа в предложение
-				text.append(suggestions);
-				suggestions = "";
-				multipoint = "";
-				continue;
+				if (symbol == ' ' || symbol == '\n')
+				{
+					// Добавление символа в предложение
+					text.append(suggestions);
+					suggestions = "";
+					multipoint = "";
+					continue;
+				}
+				else multipoint = "";
 			}
-			//text.append(suggestions);
 		}
 		// Проверка на окончание предложения с помощью точки
 		suggestions += symbol;
@@ -288,16 +291,20 @@ int readFile(string& path, List <string>& text)
 		{
 			text.append(suggestions);
 			suggestions = "";
+			multipoint = "";
 		}
 		// Проверка на окончание предложения с помощью вопросительного знака
 		if (symbol == '?')
 		{
 			text.append(suggestions);
 			suggestions = "";
+			multipoint = "";
 		}
 	}
-	// Добавление последнего предложения
-	text.append(suggestions);
+	// Добавление последнего предложения, если оно не пустое
+	if (!suggestions.empty()) {
+		text.append(suggestions);
+	}
 	file.close();
 	return 0;
 }
