@@ -178,7 +178,7 @@ public:
             current = current->next; // Переходим к следующему узлу
         }
 
-        throw std::invalid_argument("Value not found in the list"); // Если значение не найдено
+        throw std::invalid_argument("Не найдено значение в List"); // Если значение не найдено
     }
 
 
@@ -186,23 +186,31 @@ public:
     void del(size_t index)
     {
         if (index < 0 || index >= size)
-            throw std::out_of_range("Index out of range");
-
+        {
+            throw std::out_of_range("Выход за границы");
+        }
         Node* current = head;
 
         for (size_t i = 0; i < index; ++i)
+        {
             current = current->next;
-
+        }
         if (current->prev)
+        {
             current->prev->next = current->next; // Соединяем предыдущий узел с следующим
+        }
         else
+        {
             head = current->next; // Если удаляем голову, обновляем указатель на голову
-
+        }
         if (current->next)
+        {
             current->next->prev = current->prev; // Соединяем следующий узел с предыдущим
+        }
         else
+        {
             tail = current->prev; // Если удаляем хвост, обновляем указатель на хвост
-
+        }
         delete current; // Освобождаем память
         size--;
     }
@@ -211,7 +219,7 @@ public:
     //>>> Метод: Получить первый элемент списка
     T& front()
     {
-        if (!head) throw std::out_of_range("List is empty");
+        if (!head) throw std::out_of_range("List пуст");
         return head->data;
     }
 
@@ -219,7 +227,7 @@ public:
     //>>> Метод: Получить последний элемент списка
     T& back()
     {
-        if (!tail) throw std::out_of_range("List is empty");
+        if (!tail) throw std::out_of_range("List пуст");
         return tail->data;
     }
 
@@ -232,7 +240,7 @@ public:
 
 
     //>>> Метод: Получить размер списка
-    size_t getSize() const
+    int getSize() const
     {
         return size;
     }
