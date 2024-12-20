@@ -667,8 +667,8 @@ void MainMenu()
 	// Заполнение структуры списка основными файлами для проверки
 	filePath.append("E:\\Example.txt");
 	filePath.append("E:\\Example2.txt");
-	filePath.append("D:\\example.txt");
-	filePath.append("D:\\ex.txt");
+	filePath.append("D:\\Example_NB1.txt");
+	filePath.append("D:\\Example_NB2.txt");
 	// начала работы меню
 	do 
 	{
