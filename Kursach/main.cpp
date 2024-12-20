@@ -334,6 +334,7 @@ void outputFileInfo(string& path, List <string>& text)
 	{
 		// Изменение кодировки для вывода содержимого файла в консоль
 		SetConsoleOutputCP(CP_UTF8);
+		// Вывод информации из структуры данных
 		text.print();
 		// Изменение кодировки для вывода текста программы в консоль
 		SetConsoleOutputCP(1251);
@@ -451,7 +452,6 @@ void processingFile(List <string>& filePath, string& path)
 			// Вызов функции сортировки предложений
 			Sorted(Text);
 			cout << "\n\n" << writeFile(filePath, path, Text) << "\n\n";
-			//flagActive = 1;
 			Text.~List();
 			break;
 		}
