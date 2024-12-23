@@ -240,7 +240,15 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 	}
 	// Закрытие файла
 	file.close();
-	filePath.append(sortedPath);
+	int flag = 1;
+	for (int i = 0; i < filePath.getSize(); i++)
+	{
+		if (sortedPath == filePath[i]) flag--;
+	}
+	if (flag)
+	{
+		filePath.append(sortedPath);
+	}
 	return ">>> |!| Данные успешно отсортированны и записаны в файл == " + sortedPath + " ==";
 }
 
