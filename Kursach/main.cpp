@@ -129,6 +129,10 @@ int foundSymb(const string& text)
 	'$', '%', '^', '&', '*', '+', '=',
 	'~', '`'
 	};
+	/*
+	* 
+	'—' - int(-1933164)
+	*/
 	int lenPM = sizeof(punctuationMarks) / sizeof(punctuationMarks[0]);
 	const char* text_C = text.c_str();
 	int lenTxt = strlen(text_C);
