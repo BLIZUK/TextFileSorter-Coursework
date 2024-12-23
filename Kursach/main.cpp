@@ -665,8 +665,8 @@ void MainMenu()
 	string path = "Не выбран!";
 	List <string> filePath;
 	// Заполнение структуры списка основными файлами для проверки
-	filePath.append("E:\\Example.txt");
-	filePath.append("E:\\Example2.txt");
+	filePath.append("E:\\Example_PC1.txt");
+	filePath.append("E:\\Example_PC2.txt");
 	filePath.append("D:\\Example_NB1.txt");
 	filePath.append("D:\\Example_NB2.txt");
 	// начала работы меню
