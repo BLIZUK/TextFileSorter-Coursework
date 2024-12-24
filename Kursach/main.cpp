@@ -459,6 +459,11 @@ void processingFile(List <string>& filePath, string& path)
 			break;
 		case 2:
 			system("cls");
+			if (readFile(path, Text))
+			{
+				cout << "\n>> |!| Ошибка, файл не может быть открыт!\n" << endl;
+				break;
+			}
 			// Вызов функции чтения файла для заполнения структуры 
 			readFile(path, Text);
 			// Вызов функции сортировки предложений
