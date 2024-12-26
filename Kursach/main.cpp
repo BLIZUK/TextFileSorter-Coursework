@@ -129,6 +129,10 @@ int foundSymb(const string& text)
 	'$', '%', '^', '&', '*', '+', '=',
 	'~', '`'
 	};
+	/*
+	* 
+	'—' - int(-1933164)
+	*/
 	int lenPM = sizeof(punctuationMarks) / sizeof(punctuationMarks[0]);
 	const char* text_C = text.c_str();
 	int lenTxt = strlen(text_C);
@@ -240,7 +244,15 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 	}
 	// Закрытие файла
 	file.close();
-	filePath.append(sortedPath);
+	int flag = 1;
+	for (int i = 0; i < filePath.getSize(); i++)
+	{
+		if (sortedPath == filePath[i]) flag--;
+	}
+	if (flag)
+	{
+		filePath.append(sortedPath);
+	}
 	return ">>> |!| Данные успешно отсортированны и записаны в файл == " + sortedPath + " ==";
 }
 
@@ -334,6 +346,7 @@ void outputFileInfo(string& path, List <string>& text)
 	{
 		// Изменение кодировки для вывода содержимого файла в консоль
 		SetConsoleOutputCP(CP_UTF8);
+		// Вывод информации из структуры данных
 		text.print();
 		// Изменение кодировки для вывода текста программы в консоль
 		SetConsoleOutputCP(1251);
@@ -446,12 +459,16 @@ void processingFile(List <string>& filePath, string& path)
 			break;
 		case 2:
 			system("cls");
+			if (readFile(path, Text))
+			{
+				cout << "\n>> |!| Ошибка, файл не может быть открыт!\n" << endl;
+				break;
+			}
 			// Вызов функции чтения файла для заполнения структуры 
 			readFile(path, Text);
 			// Вызов функции сортировки предложений
 			Sorted(Text);
 			cout << "\n\n" << writeFile(filePath, path, Text) << "\n\n";
-			//flagActive = 1;
 			Text.~List();
 			break;
 		}
@@ -665,10 +682,10 @@ void MainMenu()
 	string path = "Не выбран!";
 	List <string> filePath;
 	// Заполнение структуры списка основными файлами для проверки
-	filePath.append("E:\\Example.txt");
-	filePath.append("E:\\Example2.txt");
-	filePath.append("D:\\example.txt");
-	filePath.append("D:\\ex.txt");
+	filePath.append("E:\\Example_PC1.txt");
+	filePath.append("E:\\Example_PC2.txt");
+	filePath.append("D:\\Example_NB1.txt");
+	filePath.append("D:\\Example_NB2.txt");
 	// начала работы меню
 	do 
 	{
