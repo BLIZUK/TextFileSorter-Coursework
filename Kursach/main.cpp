@@ -60,7 +60,6 @@ static void DelayInput()
 int Comparison(char symbol)
 {
 	const char punctuationMarks[256] = {
-		// Инициализируем массив символами ASCII от 0 до 255
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 		10, 11, 12, 13, 14, 15, 16, 17,
 		18, 19, 20, 21, 22, 23, 24, 25,
@@ -79,8 +78,6 @@ int Comparison(char symbol)
 		'p','q','r','s','t','u','v','w',
 		'x','y','z','{','|','}','~',
 
-		// Добавляем русские символы
-		// В кодировке Windows-1251 (для примера)
 		'\xC0','\xC1','\xC2','\xC3','\xC4',
 		'\xC5','\xC6','\xC7','\xC8','\xC9',
 		'\xD0','\xD1','\xD2','\xD3','\xD4',
@@ -150,7 +147,6 @@ int foundSymb(const string& text)
 {
 	int punctuationCount = 0; // Изменено название переменной
 	const char punctuationMarks[256] = {
-		// Инициализируем массив символами ASCII от 0 до 255
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 		10, 11, 12, 13, 14, 15, 16, 17,
 		18, 19, 20, 21, 22, 23, 24, 25,
@@ -169,8 +165,6 @@ int foundSymb(const string& text)
 		'p','q','r','s','t','u','v','w',
 		'x','y','z','{','|','}','~',
 
-		// Добавляем русские символы
-		// В кодировке Windows-1251 (для примера)
 		'\xC0','\xC1','\xC2','\xC3','\xC4',
 		'\xC5','\xC6','\xC7','\xC8','\xC9',
 		'\xD0','\xD1','\xD2','\xD3','\xD4',
@@ -296,63 +290,39 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 
 
 //>>> Функция: Чтение информации с файла в структуру данных
-int readFile(string& path, List <string>& text)
+int readFile(string& path, List<string>& text)
 {
 	ifstream file(path);
 	if (!file.is_open())
-	{
-		file.close();
-		return 1;
-	}
+		return 1; // Не удалось открыть файл
+
 	char symbol;
-	string suggestions, multipoint = "";
+	string suggestions;
+
 	// Чтение файла посимвольно
 	while (file.get(symbol))
 	{
-		// Проверка на окончание предложения с помощью многоточия
-		if (multipoint != "")
+		// Проверка на окончание предложения
+		if (symbol == '.' || symbol == '!' || symbol == '?')
 		{
-			if (symbol != '.')
-			{
-				if (symbol == ' ' || symbol == '\n')
-				{
-					// Добавление символа в предложение
-					text.append(suggestions);
-					suggestions = "";
-					multipoint = "";
-					continue;
-				}
-				else multipoint = "";
-			}
+			suggestions += symbol; // Добавляем последний символ (знак окончания)
+			text.append(suggestions); // Добавляем предложение в список
+			suggestions.clear(); // Очищаем строку для следующего предложения
 		}
-		// Проверка на окончание предложения с помощью точки
-		suggestions += symbol;
-		if (symbol == '.')
-		{
-			multipoint += symbol; 
-		}
-		// Проверка на окончание предложения с помощью восклицательного знака
-		if (symbol == '!')
-		{
-			text.append(suggestions);
-			suggestions = "";
-			multipoint = "";
-		}
-		// Проверка на окончание предложения с помощью вопросительного знака
-		if (symbol == '?')
-		{
-			text.append(suggestions);
-			suggestions = "";
-			multipoint = "";
-		}
+		else if (symbol != '\n') // Игнорируем символы новой строки
+			suggestions += symbol; // Добавляем символ к текущему предложению
 	}
+
+
 	// Добавление последнего предложения, если оно не пустое
 	if (!suggestions.empty()) {
 		text.append(suggestions);
 	}
+
 	file.close();
-	return 0;
+	return 0; // Успешное завершение функции
 }
+
 
 
 //>>> Функция: Вывод информации о файле
@@ -435,9 +405,7 @@ void outputFileInfo(string& path, List <string>& text)
 						cout << "\t|\t\t|    ";
 						counter = 0;
 					}
-					SetConsoleOutputCP(CP_UTF8);
 					cout << symbols[k] << " ";
-					SetConsoleOutputCP(1251);
 					counter += 1;
 					k++;
 				}
@@ -504,6 +472,7 @@ void processingFile(List <string>& filePath, string& path)
 				cout << "\n>> |!| Ошибка, файл не может быть открыт!\n" << endl;
 				break;
 			}
+			Text.~List();
 			// Вызов функции чтения файла для заполнения структуры 
 			readFile(path, Text);
 			// Вызов функции сортировки предложений
