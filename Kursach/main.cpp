@@ -1,4 +1,4 @@
-/* 
+﻿/* 
 Автор: Близученко А.Г.
 Учебная дисциплина: Архитектура вычислительных систем
 Тема: "Сортировка последовательностей"
@@ -138,6 +138,11 @@ void foundSymb(string text, List <char>& symbols)
 
 
 //>>> Функция: Нахождение символов в предложение и подсчет их
+#include <string>
+#include <cstring>
+
+using namespace std;
+
 int foundSymb(const string& text)
 {
 	int punctuationCount = 0; // Изменено название переменной
