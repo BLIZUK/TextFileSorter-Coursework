@@ -233,10 +233,18 @@ int foundSymb(const string& text)
 
 
 //>>> Функция: Сортировка файла методом insertion sort (Сортировка вставками)
-void Sorted(List<string>& Text)
+void Sorted(List<string>& Text, string& path)
 {
+	int status;
 	for (int i = 1; i < Text.getSize(); i++)
 	{
+		status = (i * 100) / Text.getSize();
+		HeadingWork();
+		cout << "\n                                         ==|Работа с файлом|==" << endl;
+		cout << "\n   |File| == " << path << " ==" << endl;
+		cout << "     |\n     |\n     |-|x| Действия:" << endl;
+		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n";
+
 		string current = Text[i]; 
 		int j = i - 1;
 
@@ -248,6 +256,17 @@ void Sorted(List<string>& Text)
 		}
 
 		Text[j + 1] = current; 
+		system("cls");
+		cout << "\n>>> |!| Обработка: |";
+		for (int j = 0; j <= (status / 10); j++)
+		{
+			cout << "[]";
+		}
+		for (int j = 0; j <= (10 - status / 10); j++)
+		{
+			cout << "--";
+		}
+		cout << "|  ==" << status << "%==";
 	}
 }
 
@@ -435,7 +454,7 @@ void outputFileInfo(string& path, List <string>& text)
 void processingFile(List <string>& filePath, string& path)
 {
 	List <string> Text; // Список предложений текста из файла
-	int flagChose, flagActive = 0;
+	int flagChose, flagSort, flagActive = 0;
 	do
 	{
 		// Вызов заголовка
@@ -444,6 +463,7 @@ void processingFile(List <string>& filePath, string& path)
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
 		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n\n$->: ";
+
 		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
@@ -456,27 +476,32 @@ void processingFile(List <string>& filePath, string& path)
 		}
 		switch (flagChose)
 		{
+		// Вывод информации о файле
 		case 1:
 			system("cls");
 			outputFileInfo(path, Text);
 			Text.~List();
 			system("cls");
 			break;
+		// Сортировка файла
 		case 2:
+			//--------------------------------------------\/ Тут нужно дополнить
 			system("cls");
 			if (readFile(path, Text))
 			{
 				cout << "\n>> |!| Ошибка, файл не может быть открыт!\n" << endl;
 				break;
 			}
+
 			Text.~List();
 			// Вызов функции чтения файла для заполнения структуры 
 			readFile(path, Text);
 			// Вызов функции сортировки предложений
-			Sorted(Text);
+			Sorted(Text, path);
 			cout << "\n\n" << writeFile(filePath, path, Text) << "\n\n";
 			Text.~List();
 			break;
+			//--------------------------------------------/\ Тут нужно дополнить
 		}
 		if (flagChose < 0 || flagChose > 2)
 		{
