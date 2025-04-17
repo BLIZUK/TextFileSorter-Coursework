@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 Автор: Близученко А.Г.
 Учебная дисциплина: Архитектура вычислительных систем
 Тема: "Сортировка последовательностей"
@@ -235,6 +235,8 @@ int foundSymb(const string& text)
 //>>> Функция: Сортировка файла методом insertion sort (Сортировка вставками)
 void Sorted(List<string>& Text, string& path)
 {
+
+// -------изменения-------
 	int status;
 	for (int i = 1; i < Text.getSize(); i++)
 	{
@@ -244,6 +246,7 @@ void Sorted(List<string>& Text, string& path)
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
 		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n";
+// -------изменения-------
 
 		string current = Text[i]; 
 		int j = i - 1;
@@ -256,6 +259,8 @@ void Sorted(List<string>& Text, string& path)
 		}
 
 		Text[j + 1] = current; 
+
+// -------изменения-------
 		system("cls");
 		cout << "\n>>> |!| Обработка: |";
 		for (int j = 0; j <= (status / 10); j++)
@@ -267,6 +272,8 @@ void Sorted(List<string>& Text, string& path)
 			cout << "--";
 		}
 		cout << "|  ==" << status << "%==";
+// -------изменения-------
+
 	}
 }
 
