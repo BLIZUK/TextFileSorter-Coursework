@@ -263,11 +263,11 @@ void Sorted(List<string>& Text, string& path)
 // -------изменения-------
 		system("cls");
 		cout << "\n>>> |!| Обработка: |";
-		for (int j = 0; j <= (status / 10); j++)
+		for (int j = 1; j <= (status / 10); j++)
 		{
 			cout << "[]";
 		}
-		for (int j = 0; j <= (10 - status / 10); j++)
+		for (int j = 1; j <= (10 - status / 10); j++)
 		{
 			cout << "--";
 		}
