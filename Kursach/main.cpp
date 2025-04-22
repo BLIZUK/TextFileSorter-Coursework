@@ -1,10 +1,12 @@
-﻿/* 
+/* 
 Автор: Близученко А.Г.
 Учебная дисциплина: Архитектура вычислительных систем
 Тема: "Сортировка последовательностей"
 Цель: "Сортировка предложений текста в текстовом файле по числу знаков"
 Шифры группы: ИВТ2-23
 Год выполнения: 2024 
+
+== РЕЛИЗ ==
 */
 
 
@@ -57,15 +59,35 @@ static void DelayInput()
 
 
 //>>> Функция: Сравнивает переменную с массивом символов
-int Comparison(char symbol)
+static int Comparison(char symbol)
 {
-	const char punctuationMarks[] =
-	{
-	'.', ',', '!', '?', ';', ':', '-', '_',
-	'(', ')', '[', ']', '{', '}', '<', '>',
-	'\'', '\"', '\\', '/', '|', '@', '#',
-	'$', '%', '^', '&', '*', '+', '=',
-	'~', '`'
+	const char punctuationMarks[256] = {
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+		10, 11, 12, 13, 14, 15, 16, 17,
+		18, 19, 20, 21, 22, 23, 24, 25,
+		26, 27, 28, 29, 30, 31, 32, ' ',
+		'!', '"', '#', '$', '%', '&', '\'',
+		'(', ')', '*', '+', ',', '-', '.',
+		'/', '0', '1', '2', '3', '4', '5',
+		'6', '7', '8', '9', ':', ';', '<',
+		'=', '>', '?', '@', 'A', 'B', 'C',
+		'D', 'E', 'F', 'G', 'H', 'I', 'J',
+		'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+		'R', 'S', 'T', 'U', 'V', 'W', 'X',
+		'Y', 'Z', '[', '\\', ']', '^', '_',
+		'`','a','b','c','d','e','f','g',
+		'h','i','j','k','l','m','n','o',
+		'p','q','r','s','t','u','v','w',
+		'x','y','z','{','|','}','~',
+
+		'\xC0','\xC1','\xC2','\xC3','\xC4',
+		'\xC5','\xC6','\xC7','\xC8','\xC9',
+		'\xD0','\xD1','\xD2','\xD3','\xD4',
+		'\xD5','\xD6','\xD7','\xD8','\xD9',
+		'\xE0','\xE1','\xE2','\xE3','\xE4',
+		'\xE5','\xE6','\xE7','\xE8','\xE9',
+		'\xF0','\xF1','\xF2','\xF3','\xF4',
+		'\xF5','\xF6'
 	};
 	int flag = 0, lenPM = sizeof(punctuationMarks) / sizeof(punctuationMarks[0]);
 
@@ -76,8 +98,8 @@ int Comparison(char symbol)
 		lea ebx, punctuationMarks   // Загружаем адрес массива символов пунктуации в регистр EBX
 		mov ecx, lenPM              // Загружаем количество символов в массиве пунктуации в регистр ECX
 
-//---------------------------------|
-//>>> Метка: Сравнение нашего символа с требуемыми символами 
+			//---------------------------------|
+			//>>> Метка: Сравнение нашего символа с требуемыми символами 
 		check_punctuation :
 
 			cmp ecx, 0				// Проверяем, остались ли символы для проверки
@@ -88,14 +110,14 @@ int Comparison(char symbol)
 			dec ecx					// Уменьшаем счетчик для массива пунктуации
 			jmp check_punctuation	// Повторяем для всех символов пунктуации
 
-//---------------------------------|
-//>>> Метка: Изменение состояния флага для проверик на сходство
+			//---------------------------------|
+			//>>> Метка: Изменение состояния флага для проверик на сходство
 		flag_add:
 
 			inc flag				// Увеличиваем счетчик найденных символов пунктуации
-
-//---------------------------------|
-//>>> Метка: Выход
+	
+			//---------------------------------|
+			//>>> Метка: Выход
 		end_loop:
 	}
 //----------------------------------------------------------------------->>>> Конец ссемблерной вставки
@@ -105,7 +127,7 @@ int Comparison(char symbol)
 
 
 //>>> Функция: Нахождение символов в предложение и занесение их в лист 
-void foundSymb(string text, List <char>& symbols)
+static void foundSymb(string text, List <char>& symbols)
 {
 	for (char s : text)
 	{
@@ -118,21 +140,38 @@ void foundSymb(string text, List <char>& symbols)
 
 
 //>>> Функция: Нахождение символов в предложение и подсчет их
-int foundSymb(const string& text)
+static int foundSymb(const string& text)
 {
-	int count = 0;
-	const char punctuationMarks[] =
-	{
-	'.', ',', '!', '?', ';', ':', '-', '_',
-	'(', ')', '[', ']', '{', '}', '<', '>',
-	'\'', '\"', '\\', '/', '|', '@', '#',
-	'$', '%', '^', '&', '*', '+', '=',
-	'~', '`'
+	int punctuationCount = 0; // Изменено название переменной
+	const char punctuationMarks[256] = {
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+		10, 11, 12, 13, 14, 15, 16, 17,
+		18, 19, 20, 21, 22, 23, 24, 25,
+		26, 27, 28, 29, 30, 31, 32, ' ',
+		'!', '"', '#', '$', '%', '&', '\'',
+		'(', ')', '*', '+', ',', '-', '.',
+		'/', '0', '1', '2', '3', '4', '5',
+		'6', '7', '8', '9', ':', ';', '<',
+		'=', '>', '?', '@', 'A', 'B', 'C',
+		'D', 'E', 'F', 'G', 'H', 'I', 'J',
+		'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+		'R', 'S', 'T', 'U', 'V', 'W', 'X',
+		'Y', 'Z', '[', '\\', ']', '^', '_',
+		'`','a','b','c','d','e','f','g',
+		'h','i','j','k','l','m','n','o',
+		'p','q','r','s','t','u','v','w',
+		'x','y','z','{','|','}','~',
+
+		'\xC0','\xC1','\xC2','\xC3','\xC4',
+		'\xC5','\xC6','\xC7','\xC8','\xC9',
+		'\xD0','\xD1','\xD2','\xD3','\xD4',
+		'\xD5','\xD6','\xD7','\xD8','\xD9',
+		'\xE0','\xE1','\xE2','\xE3','\xE4',
+		'\xE5','\xE6','\xE7','\xE8','\xE9',
+		'\xF0','\xF1','\xF2','\xF3','\xF4',
+		'\xF5','\xF6'
 	};
-	/*
-	* 
-	'—' - int(-1933164)
-	*/
+
 	int lenPM = sizeof(punctuationMarks) / sizeof(punctuationMarks[0]);
 	const char* text_C = text.c_str();
 	int lenTxt = strlen(text_C);
@@ -140,74 +179,70 @@ int foundSymb(const string& text)
 	//----------------------------------------------------------------------->>>> Ассемблерная вставка для подсчета символов в предложение
 	__asm
 	{
-		mov esi, text_C					// Указатель на начало строки
-		mov ecx, lenTxt					// Длина строки
-	//---------------------------------|
-	//>>> Метка: Переход к следующему символу
-				next_char :
+		mov esi, text_C                    // Указатель на начало строки
+		mov ecx, lenTxt                    // Длина строки
+			//---------------------------------|
+			//>>> Метка: Переход к следующему символу
+		next_char :
 
-			cmp ecx, 0					// Проверка на конец строки
-			je end_loop					// Если конец, выходим из цикла
-			mov al, [esi]				// Загружаем текущий символ
-			inc esi						// Переходим к следующему символу
-			dec ecx						// Уменьшаем счетчик
-			push ecx					// Сохраняем длину оставшейся строки
-			mov ecx, lenPM				// Устанавливаем длину массива пунктуации
-			lea ebx, punctuationMarks	// Указатель на массив пунктуаци
+		cmp ecx, 0						   // Проверка на конец строки
+			je end_loop                    // Если конец, выходим из цикла
+			mov al, [esi]                  // Загружаем текущий символ
+			inc esi                        // Переходим к следующему символу
+			dec ecx                        // Уменьшаем счетчик
+			push ecx                       // Сохраняем длину оставшейся строки
+			mov ecx, lenPM                 // Устанавливаем длину массива пунктуации
+			lea ebx, punctuationMarks      // Указатель на массив пунктуации
 
-	//---------------------------------|
-	//>>> Метка: Сравнение нашего символа с требуемыми символами 
-				check_punctuation : 
+			//---------------------------------|
+			//>>> Метка: Сравнение нашего символа с требуемыми символами 
+		check_punctuation:
 
-			cmp ecx, 0					// Проверяем, остались ли символы для проверки
-			je pop_ecx					// Если нет, выходим из проверки
-			cmp al, [ebx]				// Сравниваем с текущим символом пунктуации
-			je count_add				// Если совпадает, увеличиваем счетчик
-			inc ebx						// Переходим к следующему символу пунктуации
-			dec ecx						// Уменьшаем счетчик для массива пунктуации
-			jmp check_punctuation		// Повторяем для всех символов пунктуации
+		cmp ecx, 0						   // Проверяем, остались ли символы для проверки
+			je pop_ecx                     // Если нет, выходим из проверки
+			cmp al, [ebx]                  // Сравниваем с текущим символом пунктуации
+			je count_add                   // Если совпадает, увеличиваем счетчик
+			inc ebx                        // Переходим к следующему символу пунктуации
+			dec ecx                        // Уменьшаем счетчик для массива пунктуации
+			jmp check_punctuation          // Повторяем для всех символов пунктуации
 
-    //---------------------------------|
-	//>>> Метка: Восстановление счетчика в массиве символов
-				pop_ecx :
+			//---------------------------------|
+			//>>> Метка: Восстановление счетчика в массиве символов
+		pop_ecx:
 
-			pop ecx						// Восстанавливаем счетчик
-			jmp next_char				// Переход к следующему символу
+		pop ecx							   // Восстанавливаем счетчик
+			jmp next_char                  // Переход к следующему символу
 
-	//---------------------------------|
-	//>>> Метка: Увеличение счетчика символов
-				count_add :		
+			//---------------------------------|
+			//>>> Метка: Увеличение счетчика символов
+		count_add:
 
-			inc count					// Увеличиваем счетчик совпадений
-			pop ecx						// Восстанавливаем счетчик
-			jmp next_char				// Переход к следующему символу
+		inc punctuationCount			   // Увеличиваем счетчик совпадений
+			pop ecx                        // Восстанавливаем счетчик
+			jmp next_char                  // Переход к следующему символу
 
-	//---------------------------------|
-	//>>> Метка: выхода
-				end_loop :				// Выход из вставки
+			//---------------------------------|
+			//>>> Метка: выхода
+		end_loop:						  // Выход из вставки
 	}
-	//----------------------------------------------------------------------->>>> Конец ссемблерной вставки
+	//----------------------------------------------------------------------->>>> Конец ассемблерной вставки
 
-/*
-В процессе написания кода на ассемблере в функции foundSymb была найдена повторяющаяся ошибка
-Функция постоянно возвращала значение - 47.
-На глаз определить проблему не удалось. ИИ тоже не смогли выявить проблему. Да и в целом ИИ очень плохо отвечает по теме ассемблера.
-И пользы от нее практичекси 0. Поэтому выбор пал на дебагинг с помощью дизассемблирования функции. 
-В процессе проверки выявилась закономерность - после прохода к новому символу предложения, 
-В регистр EAX заносилось значение этого символа в кодировки ASCII. В конце предложения в моих примерах была точка.
-Ее значение в ASCII формате 46. Так как это символ, то цикл добавляет единицу к регистру eax. Затем переносит значение из eax в мою переменную и выходит.
-Решение оказалось простым - избавление от взаимодействия с регистром eax и работа со счетчиком (count) напрямую.
-*/
-
-	return count; // Возвращаем количество найденных символов пунктуации
+	return punctuationCount; // Возвращаем количество найденных символов пунктуации
 }
 
 
+
 //>>> Функция: Сортировка файла методом insertion sort (Сортировка вставками)
-void Sorted(List<string>& Text)
+static void Sorted(List<string>& Text, string& path)
 {
+
+
+	int status;
 	for (int i = 1; i < Text.getSize(); i++)
 	{
+		status = (i * 100) / Text.getSize();
+
+
 		string current = Text[i]; 
 		int j = i - 1;
 
@@ -219,12 +254,41 @@ void Sorted(List<string>& Text)
 		}
 
 		Text[j + 1] = current; 
+
+		system("cls");
+		HeadingWork();
+		cout << "\n                                         ==|Работа с файлом|==" << endl;
+		cout << "\n   |File| == " << path << " ==" << endl;
+		cout << "     |\n     |\n     |-|x| Действия:" << endl;
+		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
+
+		cout << "\n>>> |Processing| == |";
+		for (int j = 1; j <= (status / 10); j++)
+		{
+			cout << "[]";
+		}
+		for (int j = 1; j <= (10 - status / 10); j++)
+		{
+			cout << "--";
+		}
+		cout << "|" << status <<"% ==\n" << endl;
+
+
 	}
+
+	system("cls");
+	HeadingWork();
+	cout << "\n                                         ==|Работа с файлом|==" << endl;
+	cout << "\n   |File| == " << path << " ==" << endl;
+	cout << "     |\n     |\n     |-|x| Действия:" << endl;
+	cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
+	cout << "\n>>> |Processing| == |[][][][][][][][][][]|100% == ";
+	cout << "\n         |";
 }
 
 
 //>>> Функция: Запись новых данных в файл
-string writeFile(List <string>& filePath, string path, List<string>& text)
+static string writeFile(List <string>& filePath, string path, List<string>& text)
 {
 	// Создание имени файла с добавленным словом "_sorted"
 	size_t dotPosition = path.find_last_of('.');
@@ -253,72 +317,48 @@ string writeFile(List <string>& filePath, string path, List<string>& text)
 	{
 		filePath.append(sortedPath);
 	}
-	return ">>> |!| Данные успешно отсортированны и записаны в файл == " + sortedPath + " ==";
+	return "         |->|!| Данные успешно отсортированы и записаны в файл == " + sortedPath + " ==";
 }
 
 
 //>>> Функция: Чтение информации с файла в структуру данных
-int readFile(string& path, List <string>& text)
+static int readFile(string& path, List<string>& text)
 {
 	ifstream file(path);
 	if (!file.is_open())
-	{
-		file.close();
-		return 1;
-	}
+		return 1; // Не удалось открыть файл
+
 	char symbol;
-	string suggestions, multipoint = "";
+	string suggestions;
+
 	// Чтение файла посимвольно
 	while (file.get(symbol))
 	{
-		// Проверка на окончание предложения с помощью многоточия
-		if (multipoint != "")
+		// Проверка на окончание предложения
+		if (symbol == '.' || symbol == '!' || symbol == '?')
 		{
-			if (symbol != '.')
-			{
-				if (symbol == ' ' || symbol == '\n')
-				{
-					// Добавление символа в предложение
-					text.append(suggestions);
-					suggestions = "";
-					multipoint = "";
-					continue;
-				}
-				else multipoint = "";
-			}
+			suggestions += symbol; // Добавляем последний символ (знак окончания)
+			text.append(suggestions); // Добавляем предложение в список
+			suggestions.clear(); // Очищаем строку для следующего предложения
 		}
-		// Проверка на окончание предложения с помощью точки
-		suggestions += symbol;
-		if (symbol == '.')
-		{
-			multipoint += symbol; 
-		}
-		// Проверка на окончание предложения с помощью восклицательного знака
-		if (symbol == '!')
-		{
-			text.append(suggestions);
-			suggestions = "";
-			multipoint = "";
-		}
-		// Проверка на окончание предложения с помощью вопросительного знака
-		if (symbol == '?')
-		{
-			text.append(suggestions);
-			suggestions = "";
-			multipoint = "";
-		}
+		else if (symbol != '\n') // Игнорируем символы новой строки
+			suggestions += symbol; // Добавляем символ к текущему предложению
 	}
+
+
 	// Добавление последнего предложения, если оно не пустое
 	if (!suggestions.empty()) {
 		text.append(suggestions);
 	}
+
 	file.close();
-	return 0;
+	return 0; // Успешное завершение функции
 }
 
 
+
 //>>> Функция: Вывод информации о файле
-void outputFileInfo(string& path, List <string>& text)
+static void outputFileInfo(string& path, List <string>& text)
 {
 	List <char> symbols; // Список знаков в предложение из файла
 	int count;
@@ -354,7 +394,9 @@ void outputFileInfo(string& path, List <string>& text)
 		cout << endl << ">> |Info|>:\n\n";
 		cout << "\n\t---------------------------------------------------------------------------------" << endl;
 		cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|" << endl;
+		SetConsoleOutputCP(CP_UTF8);
 		cout << "\t|    № Номер\t|\t\t    Символы\t\t\t|     Кол-Во\t|" << endl;
+		SetConsoleOutputCP(1251);
 		cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 		for (int i = 0; i < text.getSize(); i++)
 		{
@@ -379,7 +421,7 @@ void outputFileInfo(string& path, List <string>& text)
 				cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 			}
 			// если знаков меньше 100
-			else if (count < 101)
+			else if (count < 1001)
 			{
 				int k = 0, counter = 0, step = 0;
 				while (count > k)
@@ -411,7 +453,9 @@ void outputFileInfo(string& path, List <string>& text)
 			// В случае переполнения таблицы
 			else
 			{
+				SetConsoleOutputCP(CP_UTF8);
 				cout << "\t\tПЕРЕПОЛНЕНИЕ\t\t\t|\t>100\t|" << endl;
+				SetConsoleOutputCP(1251);
 				cout << "\t|\t\t|\t\t\t\t\t\t|\t\t|";
 			}
 			symbols.~List();
@@ -420,25 +464,41 @@ void outputFileInfo(string& path, List <string>& text)
 	}
 	else
 	{
+		SetConsoleOutputCP(CP_UTF8);
 		cout << "\n\t\t~~ В файле не найдены предложения! ~~ " << endl; 
 	}
+	SetConsoleOutputCP(CP_UTF8);
 	DelayInput();
 }
 
 
+//NEW
+static void SortProc(string& path, List <string>& Text, List <string>& filePath)
+{
+	Text.~List();
+	// Вызов функции чтения файла для заполнения структуры 
+	readFile(path, Text);
+	// Вызов функции сортировки предложений
+	Sorted(Text, path);
+	cout << "\n" << writeFile(filePath, path, Text) << "\n\n$->: ";
+	Text.~List();
+}
+
+
 //>>> Функция: Функция: Обработка файла - чтение и сортировка.
-void processingFile(List <string>& filePath, string& path)
+static void processingFile(List <string>& filePath, string& path)
 {
 	List <string> Text; // Список предложений текста из файла
 	int flagChose, flagActive = 0;
+	// Вызов заголовка
+	HeadingWork();
+	cout << "\n                                         ==|Работа с файлом|==" << endl;
+	cout << "\n   |File| == " << path << " ==" << endl;
+	cout << "     |\n     |\n     |-|x| Действия:" << endl;
+	cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n\n$->: ";
 	do
 	{
-		// Вызов заголовка
-		HeadingWork();
-		cout << "\n                                         ==|Работа с файлом|==" << endl;
-		cout << "\n   |File| == " << path << " ==" << endl;
-		cout << "     |\n     |\n     |-|x| Действия:" << endl;
-		cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n\n$->: ";
+
 		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
@@ -446,36 +506,53 @@ void processingFile(List <string>& filePath, string& path)
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			flagChose = -1;
 			system("cls");
-			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
+			// Вызов заголовка
+			HeadingWork();
+			cout << "\n                                         ==|Работа с файлом|==" << endl;
+			cout << "\n   |File| == " << path << " ==" << endl;
+			cout << "     |\n     |\n     |-|x| Действия:" << endl;
+			cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
+			cout << "\n>> |!| Вы ввели неправильное значение!\n\n$->: ";
 			continue;
 		}
 		switch (flagChose)
 		{
+		// Вывод информации о файле
 		case 1:
 			system("cls");
 			outputFileInfo(path, Text);
 			Text.~List();
 			system("cls");
+			HeadingWork();
+			cout << "\n                                         ==|Работа с файлом|==" << endl;
+			cout << "\n   |File| == " << path << " ==" << endl;
+			cout << "     |\n     |\n     |-|x| Действия:" << endl;
+			cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
+			cout << "\n\n$->: ";
 			break;
+		// Сортировка файла
 		case 2:
+			//--------------------------------------------\/ Тут нужно дополнить
 			system("cls");
 			if (readFile(path, Text))
 			{
 				cout << "\n>> |!| Ошибка, файл не может быть открыт!\n" << endl;
 				break;
 			}
-			// Вызов функции чтения файла для заполнения структуры 
-			readFile(path, Text);
-			// Вызов функции сортировки предложений
-			Sorted(Text);
-			cout << "\n\n" << writeFile(filePath, path, Text) << "\n\n";
-			Text.~List();
+			SortProc(path, Text, filePath);
 			break;
+			//--------------------------------------------/\ Тут нужно дополнить
 		}
 		if (flagChose < 0 || flagChose > 2)
 		{
 			system("cls");
-			cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
+			// Вызов заголовка
+			HeadingWork();
+			cout << "\n                                         ==|Работа с файлом|==" << endl;
+			cout << "\n   |File| == " << path << " ==" << endl;
+			cout << "     |\n     |\n     |-|x| Действия:" << endl;
+			cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
+			cout << "\n>> |!| Вы ввели неправильное значение!\n\n$->: " << endl;
 		}
 	} while (flagChose != 0);
 }
@@ -489,7 +566,7 @@ void processingFile(List <string>& filePath, string& path)
 
 
 //>>> Функция: Функция: Вывод списка сохраненных файлов 
-int sevedFiles(List <string>& filePath, string& path)
+static int sevedFiles(List <string>& filePath, string& path)
 {
 	int flagChose;
 	do
@@ -542,7 +619,7 @@ int sevedFiles(List <string>& filePath, string& path)
 
 
 //>>> Функция: Вывод меню удаление файла из структуры
-void delFile(List <string>& filePath)
+static void delFile(List <string>& filePath)
 {
 	int flagChose;
 	do
@@ -584,7 +661,7 @@ void delFile(List <string>& filePath)
 
 
 //>>>  Функция: Вывод меню добавления нового файла в структуру
-void newFile(List <string>& filePath)
+static void newFile(List <string>& filePath)
 {
 	string path;
 	ifstream file;
@@ -616,7 +693,7 @@ void newFile(List <string>& filePath)
 
 
 //>>>  Функция: Вывод меню выбора файла
-void selectionFile(List <string>& filePath, string& path)
+static void selectionFile(List <string>& filePath, string& path)
 {
 	int flagChose;
 	// Началао работы меню выбора файлов 
@@ -676,16 +753,14 @@ void selectionFile(List <string>& filePath, string& path)
 
 
 //>>> Функция: Вывод главного меню 
-void MainMenu() 
+static void MainMenu()
 {
 	int flagChose;
 	string path = "Не выбран!";
 	List <string> filePath;
 	// Заполнение структуры списка основными файлами для проверки
-	filePath.append("E:\\Example_PC1.txt");
-	filePath.append("E:\\Example_PC2.txt");
-	filePath.append("D:\\Example_NB1.txt");
-	filePath.append("D:\\Example_NB2.txt");
+	filePath.append("Example1.txt");
+	filePath.append("Example2.txt");
 	// начала работы меню
 	do 
 	{
@@ -694,7 +769,7 @@ void MainMenu()
 		cout << "\n                                              ==|Меню|==" << endl;
 		cout << "\n   |File| == " << path << " ==" << endl;
 		cout << "     |\n     |\n     |-|x| Действия:" << endl;
-		cout << "        |\n        | 1 - Работа с файлом;\n        | 2 - Выбор файла;\n        | 0 - Выход;\n        |\n\n$->: ";
+		cout << "        |\n        | 1 - Работа с файлом;\n        | 2 - Выбор файла;\n        | 0 - Завершение работы;\n        |\n\n$->: ";
 		// Проверка на ввод нечислового значения
 		if (!(cin >> flagChose))
 		{
@@ -745,7 +820,8 @@ void MainMenu()
 int main()
 {
 	// Изменение кодировки терминала для работы с кириллицей
-	system("chcp 1251 > nul");
+	//system("chcp 1251 > nul"); // Почему то слетела....
+	SetConsoleOutputCP(CP_UTF8);
 	// Запуск главного меню
 	MainMenu();
 	return 0;
