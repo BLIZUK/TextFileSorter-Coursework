@@ -317,7 +317,7 @@ static string writeFile(List <string>& filePath, string path, List<string>& text
 	{
 		filePath.append(sortedPath);
 	}
-	return "         |->|!| Данные успешно отсортированны и записаны в файл == " + sortedPath + " ==";
+	return "         |->|!| Данные успешно отсортированы и записаны в файл == " + sortedPath + " ==";
 }
 
 
@@ -512,7 +512,7 @@ static void processingFile(List <string>& filePath, string& path)
 			cout << "\n   |File| == " << path << " ==" << endl;
 			cout << "     |\n     |\n     |-|x| Действия:" << endl;
 			cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
-			cout << "\n>> |!| Вы ввели неправильное значение!\n\n$->: " << endl;
+			cout << "\n>> |!| Вы ввели неправильное значение!\n\n$->: ";
 			continue;
 		}
 		switch (flagChose)
@@ -528,7 +528,7 @@ static void processingFile(List <string>& filePath, string& path)
 			cout << "\n   |File| == " << path << " ==" << endl;
 			cout << "     |\n     |\n     |-|x| Действия:" << endl;
 			cout << "        |\n        | 1 - Чтение файла;\n        | 2 - Сортировка {Ключевое поле - 'Знаки'};\n        | 0 - Выход в меню;\n        |\n";
-			cout << "\n\n$->: " << endl;
+			cout << "\n\n$->: ";
 			break;
 		// Сортировка файла
 		case 2:
