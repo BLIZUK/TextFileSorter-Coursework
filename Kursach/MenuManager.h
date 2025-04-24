@@ -6,9 +6,20 @@ class Menu
 {
 
 private:
-	int value;
+	string path;
+	size_t count;
+
+public:
+	virtual int DrowMenu(string path, size_t count) const = 0;
+
+};
 
 
+class MainMenu : Menu
+{
+public:
+	// Завернуть по требованию интерфейсов.
+	//int DrowMenu;
 };
 
 

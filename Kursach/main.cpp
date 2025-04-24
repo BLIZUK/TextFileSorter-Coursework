@@ -698,6 +698,8 @@ static void newFile(List <string>& filePath)
 static void selectionFile(List <string>& filePath, string& path)
 {
 	int flagChose;
+
+
 	// Началао работы меню выбора файлов 
 	do
 	{
@@ -763,6 +765,7 @@ static void MainMenu()
 	// Заполнение структуры списка основными файлами для проверки
 	filePath.append("Example1.txt");
 	filePath.append("Example2.txt");
+
 	// начала работы меню
 	do 
 	{
@@ -808,6 +811,8 @@ static void MainMenu()
 				cout << "\n>> |!| Вы ввели неправильное значение!\n" << endl;
 			}
 	} while (flagChose != 0);
+
+
 	// Отчистка структуры данных
 	filePath.~List();
 	system("cls");
