@@ -10,16 +10,20 @@ private:
 	size_t count;
 
 public:
-	virtual int DrowMenu(string path, size_t count) const = 0;
+	// Виртуальная функция, для отрисовки меню
+	virtual void DrowMenu(string path, size_t count) const = 0;
+	virtual void ~Menu() = default;
 
 };
 
 
-class MainMenu : Menu
+class MainMenu : public Menu
 {
 public:
-	// Завернуть по требованию интерфейсов.
-	//int DrowMenu;
+	void DrowMenu() const override
+	{
+
+	}
 };
 
 
