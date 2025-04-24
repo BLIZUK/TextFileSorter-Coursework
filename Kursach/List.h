@@ -259,24 +259,24 @@ public:
 
 
     //>>> Метод: Оператор индексации
-    T& operator[](const int index) {
+    T& operator[](const size_t index) {
         if (index < 0 || index >= size) {
             throw std::out_of_range("Индекс вне диапазона");
         }
         Node* t = head;
-        for (int i = 0; i < index; i++) {
+        for (size_t i = 0; i < index; i++) {
             t = t->next;
         }
         return t->data;
     }
 
     // Оператор индексации для получения значений по индексу 
-    const T& operator[](const int index) const {
+    const T& operator[](const size_t index) const {
         if (index < 0 || index >= size) {
             throw std::out_of_range("Индекс вне диапазона");
         }
         Node* t = head;
-        for (int i = 0; i < index; i++) {
+        for (size_t i = 0; i < index; i++) {
             t = t->next;
         }
         return t->data;
