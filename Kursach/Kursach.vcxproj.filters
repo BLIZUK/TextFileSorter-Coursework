@@ -13,23 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\BUM">
+      <UniqueIdentifier>{a7150f6d-8623-4f3a-8f5a-2f18c68cf8ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClCompile Include="mainMenu.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="List.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="MenuManager.h">
+      <Filter>Файлы заголовков\BUM</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenu.h">
+      <Filter>Файлы заголовков\BUM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\..\Example_PC1.txt">
+    <Text Include="Example1.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="Example2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="CMakelists.txt" />
   </ItemGroup>
 </Project>

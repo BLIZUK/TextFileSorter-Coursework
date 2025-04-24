@@ -130,13 +130,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="List.h" />
+    <ClInclude Include="mainMenu.h" />
     <ClInclude Include="MenuManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\..\Example_PC1.txt" />
+    <Text Include="CMakelists.txt" />
+    <Text Include="Example1.txt" />
+    <Text Include="Example2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

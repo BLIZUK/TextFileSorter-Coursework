@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.8)
+
+project(Kursach)
+
+FILE(GLOB_RECURSE headers "src/*.h")
+FILE(GLOB_RECURSE sources "src/*.cpp")
+
+add_executable(my_game ${sources} ${headers})
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}  FILES ${sources} ${headers})

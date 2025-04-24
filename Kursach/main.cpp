@@ -20,7 +20,10 @@
 #include <limits>
 #include <cstring>
 #include "List.h"
-#include "MenuManager.h"
+
+
+#include "mainMenu.h"
+#include <memory>
 
 
 
@@ -827,9 +830,20 @@ static void MainMenu()
 int main()
 {
 	// Изменение кодировки терминала для работы с кириллицей
-	//system("chcp 1251 > nul"); // Почему то слетела....
-	SetConsoleOutputCP(CP_UTF8);
+	system("chcp 1251 > nul"); // Почему то слетела....
+	//SetConsoleOutputCP(CP_UTF8);
 	// Запуск главного меню
-	MainMenu();
+	//MainMenu();
+
+
+	//std::unique_ptr<Menu> menu = std::make_unique<mainMenu>();
+	//menu->drawMenu();
+
+
+	mainMenu menu;
+	menu.setPath("C:/Gav.txt");
+	menu.drawMenu();
+
+
 	return 0;
 }

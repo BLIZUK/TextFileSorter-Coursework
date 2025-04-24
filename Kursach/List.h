@@ -1,7 +1,4 @@
-﻿//  Header file: List.h
-
-
-#ifndef LIST_H
+﻿#ifndef LIST_H
 #define LIST_H
 
 
@@ -302,6 +299,20 @@ public:
 
             current = nextNode; // Переходим к следующему узлу
         }
+    }
+
+    bool find(const T& value)
+    {
+        Node* current = head;
+        while(current)
+        {
+            if (current -> data == value)
+            {
+                return 1;
+            }
+            current = current -> next;
+        }
+        return 0;
     }
 };
 
