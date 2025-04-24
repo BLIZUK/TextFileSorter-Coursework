@@ -4,21 +4,26 @@
 
 class Menu
 {
-
+/*
 private:
 	string path;
 	size_t count;
+*/
 
+	//string path, size_t count
 public:
 	// Виртуальная функция, для отрисовки меню
-	virtual void DrowMenu(string path, size_t count) const = 0;
-	virtual void ~Menu() = default;
+	virtual void DrowMenu() const = 0;
+	virtual ~Menu() = default;
 
 };
 
 
 class MainMenu : public Menu
 {
+private:
+	string path;
+
 public:
 	void DrowMenu() const override
 	{
