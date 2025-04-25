@@ -5,7 +5,8 @@
 #include "MenuManager.h"
 
 
-class mainMenu : public Menu {
+class mainMenu : public Menu
+{
 private:
     std::string path;
 
