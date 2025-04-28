@@ -840,7 +840,7 @@ int main()
 	//menu->drawMenu();
 
 
-	mainMenu menu;
+	MenuStart menu;
 	menu.setPath("C:/Gav.txt");
 	menu.drawMenu();
 

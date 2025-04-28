@@ -1,7 +1,7 @@
 #include "mainMenu.h"
 #include <iostream>
 
-void mainMenu::drawMenu() const
+void MenuStart::drawMenu() const
 {
 	std::cout << "\n                                              ==|Μενώ|==" << std::endl;
 	std::cout << "\n   |File| == " << path << " ==" << std::endl;
@@ -10,7 +10,7 @@ void mainMenu::drawMenu() const
 }
 
 
-void mainMenu::setPath(const std::string& newPath)
+void MenuStart::setPath(const std::string& newPath)
 {
 	path = newPath;
 }
