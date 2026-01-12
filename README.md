@@ -31,7 +31,11 @@
 
 ## Пример работы продукта 
 
+1. Главное меню
 ![Главное меню](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i1.png)
+2. Меню выбора файлов
 ![Меню выбора файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i2.png)
+3. Меню обработки файлов
 ![Меню обработки файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i3.png)
+4. Обработка файлов
 ![Обработка файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i4.png)
