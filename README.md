@@ -28,3 +28,10 @@
 2. Убедитесь, что выбрана платформа **x86** (требуется для корректной работы `__asm` блоков).
 3. Скомпилируйте и запустите проект.
 4. Программа попросит указать путь к текстовому файлу для обработки.
+
+## Пример работы продукта 
+
+![Главное меню](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i1.png)
+![Меню выбора файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i2.png)
+![Меню обработки файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i3.png)
+![Обработка файлов](https://github.com/BLIZUK/TextFileSorter-Coursework/blob/master/images/i4.png)
